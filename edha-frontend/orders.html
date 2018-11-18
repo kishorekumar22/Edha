@@ -1,0 +1,169 @@
+<!-- /Modal for new order -->
+<div class="modal fade" id="newOrder">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">New Order</h4>
+      </div>
+      <div class="modal-body">
+      <div class="form-group col-md-8">
+       <label>Customer</label> <select class="form-control" ng-model="customerForOrder">
+    <option ng-repeat="c in customers" value="{{c.id}}">{{c.customerName}},{{c.customerAddress.city}}</option>
+  </select></div>
+  <div class="form-group col-md-4">
+  <label>Discount(%)</label>
+<input type="number" class="form-control right" ng-model="discountOffered" min="0"></div>
+  <hr/>
+  <div class="form-group col-md-8">
+  <label>Product: </label>
+  <select class="form-control" ng-model="productInOrder">
+    <option ng-repeat="p in products" value="{{p}}">{{p.productName}}(Rs.{{p.price}})</option>
+  </select></div>
+  <div class="form-group col-md-4">
+  <label>Quantity: </label>
+<input type="number" class="form-control right" ng-model="productQtyInOrder" min="1" required></div>
+       <table class="table table-striped">
+        <thead id="tblHead">
+          <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th class="text-right">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="prodInCart in newOrder.products">
+          <td>{{prodInCart.product.name}}</td>
+          <td>{{prodInCart.product.price}}</td>
+          <td class="text-right">{{prodInCart.qty}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-group">
+      <button type="button" class="btn btn-default btn-sm pull-right" value="Add Product" ng-click="addProduct();" ng-disabled="productQtyInOrder == 0 || productQtyInOrder =='' || productInOrder=='' || customerForOrder == ''">Add product</button>
+        <button type="button" class="btn btn-default btn-sm pull-right" value="Reset" ng-click="resetProducts();">Reset</button>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+
+    <span ng-show="modalData != undefined && modalData.errorMessage != undefined && modalData.errorMessage.length > 0"><strong>Error</strong>{{modalData.errorMessage}}</span>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="placeNewOrder()" ng-disabled="customerForOrder == '' || newOrder.products.length == 0">Save Order</button>
+    </div>
+
+  </div>
+</div>
+</div><!-- /.modal -->
+
+<div class="col-lg-12">
+  <div class="panel panel-info">
+    <div class="panel-heading clearfix">
+      <h3 class="panel-title pull-left" style="padding-top: 0.5%;"><b>Orders</b></h3>
+      <div class="pull-right" style="padding-left:1%"><button class="btn btn-primary btn-md" href="#newOrder" id="openBtn" data-toggle="modal" ng-click="getProductsList();getCustomerList();newOrder ={};customerForOrder ='';discountOffered='';productQtyInOrder='';productInOrder={}">New order</button></div>
+      <div class="btn-group pull-right">
+        <button class="btn btn-default btn-sm" ng-click="getOrdersByStatus('NEW')">New</button>
+        <button class="btn btn-default btn-sm" ng-click="getOrdersByStatus('APPROVED')">Approved</button> 
+         <button class="btn btn-default btn-sm" ng-click="getOrdersByStatus('CANCELLED')">Cancelled</button>
+        <button class="btn btn-default btn-sm" ng-click="getOrdersByStatus('CLOSED')">Completed</button> 
+      </div>
+
+
+      <div class="btn-group pull-right" style="padding-right:2%">
+        <button class="btn btn-default btn-sm" ng-click="getOrdersOfToday()">Today</button>
+        <button class="btn btn-default btn-sm" ng-click="getOrdersOfThisMonth()">This month</button> 
+      </div>
+    </h3>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped" style="border-collapse:collapse;">
+
+      <thead>
+
+      <tr class="filters"><form>
+          <th></th><th></th>
+          <th><input type="text" class="form-control input-sm" placeholder="Customer name" ng-model="filter.customerName" ></th>
+          <th><input type="text" class="form-control input-sm" placeholder="Incharge/Salesman" ng-model="filter.inchargeName" ></th>
+          <th><!--<input type="text" class="form-control" placeholder="Period" ng-model="filter.period" >--><span class="form-inline"><input class="form-control input-sm" placeholder="From Date" type="date" ng-model="filter.periodFrom">
+          <input class="form-control input-sm" type="date" ng-model="filter.periodTo" placeholder="To Date" min="{{filter.periodFrom | date:'yyyy-MM-dd'}}"></th></span>
+          <th><button type="submit" class="btn btn-sm btn" ng-click="getOrdersByFilter()">Filter</button></th></form>
+      </tr>
+        <tr><th>#</th>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Taken by</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+        
+      </thead>
+      <tbody ng-repeat="o in orders">
+
+        <tr data-toggle="collapse" data-target="#demo{{o.id}}" class="accordion-toggle">
+          <td>{{$index + 1}}</td>
+          <td>{{o.id}}</td>
+          <td>{{o.customer.customerName}}</td>
+          <td>{{o.user.fullName}}</td>
+          <td>{{o.createdOn | date:'dd/MM/yyyy - h:mma'}}</td>
+          <td><span class="label label-warning">{{o.status | lowercase}}</span>
+          </td>
+        </tr>
+        <tr>
+
+          <tr>
+            <td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;text-align:center"><div class="accordian-body collapse" id="demo{{o.id}}"> 
+              <table class="table table-bordered">
+                <thead>
+                  <tr><th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="prod in o.products">
+                    <td>{{$index +1}}</td>
+                    <td>{{prod.product.productName}}</td>
+                    <td class="text-right">{{prod.product.price}}</td>
+                    <td class="text-right">{{prod.qty}}</td>
+                    <td class="text-right">{{prod.product.price * prod.qty}}</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line" class="text-right"><strong>Subtotal</strong></td>
+                    <td class="no-line text-right">{{getSum(o.products)}}</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"><strong>Discount</strong></td>
+                    <td class="no-line text-right">{{o.discount}}%</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"><strong>Total</strong></td>
+                    <td class="no-line text-right">{{getSum(o.products) * (1 -  o.discount / 100)}}</td>
+                    </tr>
+                    
+                  </tr>
+                </tbody>
+              </table>
+              <button type="button" class="btn btn-default btn-sm" ng-show="o.status == 'NEW'" ng-click="updateOrderStatus(o,'APPROVED')">Approve</button>
+                    <button type="button" class="btn btn-danger btn-sm" ng-show="o.status == 'NEW' || o.status == 'APPROVED'" ng-click="updateOrderStatus(o,'CANCELLED')">Reject</button>
+      <button type="button" class="btn btn-default btn-sm" ng-show="o.status == 'APPROVED'" ng-click="updateOrderStatus(o,'CLOSED')">Complete</button>
+            </div> </td>
+          </tr></tr>
+        </tbody>
+      </table>      
+    </div>
+  </div></div></div>
+</div> 
+
+</div>
+

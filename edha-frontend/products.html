@@ -1,0 +1,75 @@
+ <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th> 
+                <!--<th scope="col">Status</th>-->
+                <th scope="col">Product</th>
+                <th scope="col" class="text-right">Stock</th>
+                <th scope="col" class="text-right">Price</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="p in products">
+                <td>{{$index + 1}}</td>
+                <!--<td>{{p.active ? 'Available' : 'Deleted'}}</td>-->
+                <td><a ng-click="modifyProduct(p);" data-toggle="modal" data-target="#productModal">{{p.productName}}</a></td>
+                <td class="text-right">{{p.inventoryQty}}</td>
+                <td class="text-right">{{p.price}}</td>
+                <td>{{p.productDescription}}</td>   
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal" ng-click="modalData={};editedProduct={}"> Add Product</button>
+
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Product
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></h3>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="ProductName" class="col-form-label">Name</label>
+            <input type="text" class="form-control" id="productName" ng-value="modalData.name" ng-model="modalData.name">
+          </div>
+          <div class="form-group">
+            <label for="ProductDescription" class="col-form-label">Description</label>
+            <textarea class="form-control" id="productDescription" ng-model="modalData.description">{{modalData.description}}</textarea>
+          </div>
+          <div class="row">
+          <div class="col-lg-6">
+        
+            <label for="price" class="col-form-label">Price</label>
+            <input type="number" class="form-control" id="productPrice" ng-model="modalData.price" min="1">
+          </div>
+          
+          <div class="col-lg-6">
+            <label for="Stock" class="col-form-label">Stock</label>
+            <input type="number" class="form-control" min="0" id="productStock" ng-model="modalData.inventoryQty">
+          </div></div>
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <span ng-show="modalData != undefined && modalData.errorMessage != undefined && modalData.errorMessage.length > 0" class="text-danger pull-left"><strong>Error  </strong>{{modalData.errorMessage}}</span>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" 
+        ng-show="modalData.isEdit && modalData.isEdit==true" ng-click="deleteProduct()">Remove</button>
+        <button type="button" class="btn btn-primary" ng-click="saveEditedProduct()" data-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="noty-holder pull-right" ng-show="errorMessage.length > 0">
+    <div class="alert alert-danger" >
+      <button type="button" class="close" ng-click="errorMessage=''">×</button>
+      <strong>Failed!</strong> {{errorMessage}}
+  </div>
+</div>
+</div>

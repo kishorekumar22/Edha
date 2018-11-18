@@ -1,0 +1,17 @@
+.noty-holder{    
+    width: 75%;    
+    top: 0;  
+    z-index: 1031; /* Max Z-Index in Fixed Nav Menu is 1030*/
+    text-align: center;
+    position: fixed;
+}
+
+.table > tbody > tr > .no-line {
+    border: none;padding-bottom:0; 
+
+}
+
+
+.table > tbody > tr > .thick-line {
+    border-top: 2px solid;
+}

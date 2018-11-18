@@ -1,0 +1,299 @@
+<div class="container bootstrap snippet">
+  <div class="row">
+  <div class="alert alert-danger" role="alert" ng-show="saveExpenseNotAllowed && saveExpenseNotAllowed == true">
+      Expense entry added for the day.Please contact Admin!!
+  </div>
+    <div class="col-sm-10"><h4><strong>{{user.fullName}}</strong></h4></div>
+
+      <!-- <div class="col-sm-2"><a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src=""></a></div>
+    </div> -->
+    <div class="row">
+      <div class="col-sm-3"><!--left col-->
+
+        <ul class="list-group">
+          <li class="list-group-item text-muted">{{user.role | lowercase }}</li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Username</strong></span> {{user.username}}</li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Email</strong></span> {{user.emailId}}</li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Contact</strong></span> {{user.phoneNumber}}</li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Status </strong></span> {{user.active ? 'Active' :'Inactive'}}</li>
+
+        </ul> 
+
+        <ul class="list-group">
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Created</strong></span> {{user.createdOn | date:'dd-MM-yyyy'}}</li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Address</strong></span> {{user.userAddress.doorNo}},{{user.userAddress.streetName}},{{user.userAddress.city}},{{user.userAddress.state}}</li>
+        </ul>
+        <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#userModal" ng-click="editUser()">Edit User</button> 
+        
+         <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#expenseModal">Add expense</button>
+        
+        
+      </div><!--/col-3-->
+      <div class="col-sm-9">
+
+        <ul class="nav nav-tabs" id="profileTabs">
+          <li ng-class="(tabSelected === 'customers') ? 'active' : ''"><a ng-click="getCustomersofUser()" >Customers</a></li>
+          <li ng-class="(tabSelected === 'orders') ? 'active' : ''"><a ng-click="getNewOrdersOfUser()" >Orders</a></li>
+          <li ng-class="(tabSelected === 'sales') ? 'active' : ''"><a ng-click="getClosedOrdersOfUser()" >Sales</a></li>
+           <li ng-class="(tabSelected === 'expenses') ? 'active' : ''"><a ng-click="getMonthlyExpense()" >Expense</a></li>
+          <!--<li><a>Expense</a></li>-->
+        </ul>
+        <!-- first tab -->
+        <div class="tab-content" ng-show="tabSelected ==='customers'">
+          <div class="tab-pane active">
+            <div class="table-responsive">
+            <div class="alert alert-info" ng-show="customersOfUser.length == 0">
+              No Customers are assigned to user: <strong>{{user.fullName}}</strong> !!
+            </div>
+              <table class="table table-hover" ng-show="customersOfUser.length > 0">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Customer name</th>
+                    <th>Contact 1</th>
+                    <th>Contact 2</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="c in customersOfUser">
+                  <tr data-toggle="collapse" data-target="#customers{{c.id}}" class="accordion-toggle">
+                    <td>{{$index + 1}}</td>
+                    <td>{{c.customerName}}</td>
+                    <!--<td>{{c.incharge.fullName}}</td>-->
+                    <td>{{c.phoneNumber1}}</td>
+                    <td>{{c.phoneNumber2}}</td>
+                    <td>{{c.customerAddress.city}}</td>
+        
+                    </tr>
+                    
+                    <tr>
+                      <td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;"><div class="accordian-body collapse" id="customers{{c.id}}"> 
+                        <table class="table table-striped">
+
+                          <tbody>
+                            <tr><td><b>GSTIN</td></b><td>{{c.gstin}}</td>
+                              <td><b>Created by</b></td><td>{{c.createdBy.fullName}}</td></tr>
+                              <tr><td><b>Created On</b></td><td>{{c.createdOn | date:'MM/dd/yyyy - h:mma'}}</td>
+                                <td><b>DoorNo</b></td><td>{{c.customerAddress.doorNo}}</td></tr>
+                                <tr><td><b>Street</b></td><td>{{c.customerAddress.streetName}}</td><td><b>Landmark</b></td><td>{{c.customerAddress.landmark}}</td></tr>
+                                <tr><td><b>City</b></td><td>{{c.customerAddress.city}}</td><td> <b>State</b></td><td>{{c.customerAddress.state}}</td></tr>
+
+                              </tbody>
+                            </table>
+
+                          </div> </td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+                  </div>
+
+               </div>
+          </div><!-- first tab -->
+
+          <!-- Second tab -->
+          <div class="tab-content" ng-show="tabSelected ==='orders'">
+          <div class="tab-pane active">
+            <div class="table-responsive">
+            <div class="alert alert-info" ng-show="userOrders.length == 0">
+              No active Orders are available for user: <strong>{{user.fullName}}</strong> !!
+            </div>
+              <table class="table table-hover" ng-show="userOrders.length > 0">
+                <thead>
+                <tr><th>#</th>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+                   </thead>
+      <tbody ng-repeat="o in userOrders">
+
+        <tr data-toggle="collapse" data-target="#demo{{o.id}}" class="accordion-toggle">
+          <td>{{$index + 1}}</td>
+          <td>{{o.id}}</td>
+          <td>{{o.customer.customerName}}</td>
+          <!--<td>{{o.user.fullName}}</td>-->
+          <td>{{o.createdOn | date:'dd/MM/yyyy - h:mma'}}</td>
+          <td><span class="label label-warning">{{o.status | lowercase}}</span>
+          </td>
+        </tr>
+        <tr>
+
+          <tr>
+            <td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;text-align:center"><div class="accordian-body collapse" id="demo{{o.id}}"> 
+              <table class="table table-bordered">
+                <thead>
+                  <tr><th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="prod in o.products">
+                    <td>{{$index +1}}</td>
+                    <td>{{prod.product.productName}}</td>
+                    <td class="text-right">{{prod.product.price}}</td>
+                    <td class="text-right">{{prod.qty}}</td>
+                    <td class="text-right">{{prod.product.price * prod.qty}}</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line" class="text-right"><strong>Subtotal</strong></td>
+                    <td class="no-line text-right">{{getSum(o.products)}}</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"><strong>Discount</strong></td>
+                    <td class="no-line text-right">{{o.discount}}%</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"><strong>Total</strong></td>
+                    <td class="no-line text-right">{{getSum(o.products) * (1 -  o.discount / 100)}}</td>
+                    </tr>
+                    
+                  </tr>
+                </tbody>
+              </table>
+              <!--<button type="button" class="btn btn-default btn-sm" ng-show="o.status == 'NEW'" ng-click="updateOrderStatus(o,'APPROVED')">Approve</button>
+                    <button type="button" class="btn btn-danger btn-sm" ng-show="o.status == 'NEW' || o.status == 'APPROVED'" ng-click="updateOrderStatus(o,'CANCELLED')">Cancel</button>
+      <button type="button" class="btn btn-default btn-sm" ng-show="o.status == 'APPROVED'" ng-click="updateOrderStatus(o,'CLOSED')">Close</button>-->
+            </div> </td>
+          </tr></tr>
+        </tbody>
+      </table> </div></div></div>
+          <!-- Second tab -->
+
+          <!-- Third tab -->
+          <div class="tab-content" ng-show="tabSelected ==='sales'">
+          <div class="tab-pane active">
+            <div class="table-responsive">
+            <div class="alert alert-info" ng-show="userSales.length == 0">
+              No Orders history available for user: <strong>{{user.fullName}}</strong> !!
+            </div>
+              <table class="table table-hover" ng-show="userSales.length > 0">
+                <thead>
+                <tr><th>#</th>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                </tr>
+                   </thead>
+      <tbody ng-repeat="o in userSales">
+
+        <tr data-toggle="collapse" data-target="#sales{{o.id}}" class="accordion-toggle">
+          <td>{{$index + 1}}</td>
+          <td>{{o.id}}</td>
+          <td>{{o.customer.customerName}}</td>
+          <!--<td>{{o.user.fullName}}</td>-->
+          <td>{{o.createdOn | date:'dd/MM/yyyy - h:mma'}}</td>
+          <td>{{getSum(o.products) * (1 -  o.discount / 100)}}
+          </td>
+        </tr>
+        <tr>
+
+          <tr>
+            <td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;text-align:center"><div class="accordian-body collapse" id="sales{{o.id}}"> 
+              <table class="table table-bordered">
+                <thead>
+                  <tr><th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="prod in o.products">
+                    <td>{{$index +1}}</td>
+                    <td>{{prod.product.productName}}</td>
+                    <td class="text-right">{{prod.product.price}}</td>
+                    <td class="text-right">{{prod.qty}}</td>
+                    <td class="text-right">{{prod.product.price * prod.qty}}</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line" class="text-right"><strong>Subtotal</strong></td>
+                    <td class="no-line text-right">{{getSum(o.products)}}</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"><strong>Discount</strong></td>
+                    <td class="no-line text-right">{{o.discount}}%</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line"><strong>Total</strong></td>
+                    <td class="no-line text-right">{{getSum(o.products) * (1 -  o.discount / 100)}}</td>
+                    </tr>
+                    
+                  </tr>
+                </tbody>
+              </table>
+              <!--<button type="button" class="btn btn-default btn-sm" ng-show="o.status == 'NEW'" ng-click="updateOrderStatus(o,'APPROVED')">Approve</button>
+                    <button type="button" class="btn btn-danger btn-sm" ng-show="o.status == 'NEW' || o.status == 'APPROVED'" ng-click="updateOrderStatus(o,'CANCELLED')">Cancel</button>
+      <button type="button" class="btn btn-default btn-sm" ng-show="o.status == 'APPROVED'" ng-click="updateOrderStatus(o,'CLOSED')">Close</button>-->
+            </div> </td>
+          </tr></tr>
+        </tbody>
+      </table> </div></div></div>
+          <!-- Third tab -->
+
+          <!-- fourth tab -->
+          <div class="tab-content" ng-show="tabSelected ==='expenses'">
+          <div class="tab-pane active">
+            <div class="table-responsive">
+            <div class="alert alert-info" ng-show="monthlyExpense.length == 0">
+              No added by user: <strong>{{user.fullName}}</strong>,so far !!
+            </div>
+              <table class="table table-hover" ng-show="monthlyExpense.length > 0">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="e in monthlyExpense">
+                  <tr >
+                    <td>{{$index + 1}}</td>
+                    <td>{{e.date | date:'dd/MM/yyyy' }}</td>
+                    <td>{{e.description}}</td>
+                    <td>{{e.amount}}</td>
+        
+                    </tr>
+                    
+
+                      </tbody>
+
+                    </table>
+                  </div>
+
+               </div>
+          </div><!-- fourth tab -->
+
+        </div><!--/col-9-->
+      </div><!--/row-->
+
+      <div ng-include="'user_input_form.html'"></div>
+      <div ng-include="'expense_input_form.html'"></div>
+
+
+         

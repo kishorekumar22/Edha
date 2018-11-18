@@ -1,0 +1,104 @@
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      <h3 class="modal-title">User
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></h3>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="row">
+            <div class="col-md-6">
+              <label for="fullName" class="col-form-label">Full Name</label>
+              <input type="text" class="form-control col-md-4" id="fullName" ng-value="modalData.fullName" ng-model="modalData.fullName" placeholder="Full name">
+            </div>
+            <div class="col-md-6">
+
+              <label for="username" class="col-form-label">Username</label>
+              <div class="row"><div class="col-md-8">
+                <input type="text" class="form-control" placeholder="username" ng-model="modalData.username" ng-value="modalData.username" ng-disabled="modalData.usernameDisabled"></div><div class="col-md-4">
+
+                <buttton class="btn btn-default btn-md" ng-click="validateUserName(modalData.username)" ng-hide="modalData.usernameDisabled">Check</buttton>
+              </div></div>
+              <span class="text-danger" ng-show="modalData.usernameError">Username exists/Invalid, try another one!!</span>
+              <span class="text-success" ng-show="modalData.usernameError != undefined && !modalData.usernameError">Username Valid,Please proceed!</span>
+            </div></div>
+
+            <div class="form-group">
+              <label for="CustomerAddresss" class="col-form-label">Address</label>
+
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <input type="text" class="form-control" id="doorNo" ng-model="modalData.userAddress.doorNo" placeholder="Door no">
+                </div>
+
+                <div class="col-lg-6">
+                  <input type="text" class="form-control" id="street" ng-model="modalData.userAddress.streetName" required placeholder="Street">
+                </div></div>
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="landmark" ng-model="modalData.userAddress.landmark" required placeholder="Landmark">
+                  </div>
+
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="city" ng-model="modalData.userAddress.city" required placeholder="City">
+                  </div></div>
+
+
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <input type="text" class="form-control" id="state" ng-model="modalData.userAddress.state" placeholder="State">
+                    </div>
+
+                  </div>
+                </div>
+                <div class="form-group">   
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <label for="Contact" class="col-form-label">Contact</label>
+                      <input type="text" class="form-control" id="contactNum" ng-model="modalData.phoneNumber" placeholder="Contact 1">
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="EmailId" class="col-form-label">Email Id</label>
+                      <input type="email" class="form-control" id="emailId" ng-model="modalData.emailId" placeholder="Email Id">
+                    </div>
+
+                  </div></div>
+
+                  <div class="form-group">   
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label for="Role" class="col-form-label">Role :</label>
+                        <input type="radio" ng-model="modalData.role" value="ADMIN">admin
+                        <input type="radio" ng-model="modalData.role" value="SALESMAN">salesman
+                      </div>
+                      <div class="col-lg-6">
+                        <label for="Status" class="col-form-label">Status :</label>
+                        <input type="radio" ng-model="modalData.active" value='true'>Active
+                        <input type="radio" ng-model="modalData.active" value='false'>Inactive
+                      </div>
+
+                    </div></div>
+
+                  </form>
+                </div>
+                <div class="modal-footer">
+                <span ng-show="modalData != undefined && modalData.errorMessage != undefined && modalData.errorMessage.length > 0" class="text-danger pull-left"><strong>Error </strong>{{modalData.errorMessage}}</span>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                  <button type="button" class="btn btn-primary" ng-click="addEditUserDetails()" >Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="noty-holder pull-right" ng-show="errorMessage.length > 0">
+            <div class="alert alert-danger" >
+              <button type="button" class="close" ng-click="errorMessage=''">×</button>
+              <strong>Failed!</strong> {{errorMessage}}
+            </div>
+          </div>
+        </div></div></div></div></div>

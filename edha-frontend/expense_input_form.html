@@ -1,0 +1,50 @@
+<div class="modal" id="expenseModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Today's expenses
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></h4>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <form >
+          <!--<div class="form-group">
+                    <input type="password" class="form-control" ng-model="oldPassword" placeholder="Old password" required>
+                  </div>-->
+                  <div class="form-group col-md-8">
+                    <label>Expense description: </label>
+                    <input class="form-control" ng-model="newExpense.description"></div>
+
+                    <div class="form-group col-md-4">
+                      <label>Amount: </label>
+                      <input type="number" class="form-control right" ng-model="newExpense.amount" min="1" required></div>
+
+                      <div class="form-group">
+                      <button type="button" class="btn btn-default btn-sm pull-right" value="Add expense" ng-click="addExpense()" ng-disabled="newExpense.amount == 0 || newExpense.amount =='' || newExpense.amount==undefined || newExpense.description =='' || newExpense.description == undefined ">Add Expense</button>
+                        <button type="button" class="btn btn-default btn-sm pull-right" value="Reset" ng-click="expenses = [];">Reset</button></div>
+                        <table class="table table-striped">
+                          <thead id="tblHead">
+                            <tr>
+                              <th>Expense</th>
+                              <th class="text-right">Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="expense in expenses">
+                              <td>{{expense.description}}</td>
+                              <td class="text-right">{{expense.amount}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div class="modal-footer">
+
+                          <button class="btn btn-primary bn-md" ng-click="saveExpense()" ng-disabled="expense.length == 0" data-dismiss="modal">Save</button>
+
+                          <button class="btn btn-default bn-md" data-dismiss="modal">cancel</button></div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>

@@ -1,0 +1,155 @@
+<div class="col-lg-12">
+	<div class="panel panel-info">
+    <div class="panel-heading clearfix">
+      <h3 class="panel-title pull-left" style="padding-top: 0.5%;"><b>Customer</b></h3>
+
+      <div class="pull-right" style="padding-left:1%">
+
+      <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#customerModal" ng-click="modalData={};">Add Customer</button></div>
+      <!--<div class="form-group  pull-right">
+      <input type="text" name="searchCustomer" ng-model="searchCustomer" class="form-control col-md-3"/></div>-->
+	</div>
+	<div class="table-responsive">
+		<table class="table table-striped" style="border-collapse:collapse;">
+
+			<thead>
+				<tr><th>#</th>
+					<th>Name</th>
+					<th>Incharge</th>
+					<th>Contact 1</th>
+					<th>Contact 2</th>
+				</tr>
+				<tr class="filters"><form>
+          <th></th>
+          <th><input type="text" class="form-control input-sm" placeholder="Customer name" ng-model="filter.customerName" ng-change="getCustomerByFilter(filter)"></th>
+          <th><input type="text" class="form-control input-sm" placeholder="Incharge/Salesman" ng-model="filter.inchargeName" ng-change="getCustomerByFilter(filter)"></th>
+          </form>
+      </tr>
+			</thead>
+			<tbody ng-repeat="c in customers">
+
+				<tr data-toggle="collapse" data-target="#demo{{c.id}}" class="accordion-toggle">
+					<td>{{$index + 1}}</td>
+					<td>{{c.customerName}}</td>
+					<td>{{c.incharge.fullName}}</td>
+					<td>{{c.phoneNumber1}}</td>
+					<td>{{c.phoneNumber2}}</td>
+				</tr>
+				<tr>
+					<td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;text-align:center"><div class="accordian-body collapse" id="demo{{c.id}}"> 
+						<table class="table table-bordered">
+							<tbody>
+								<tr><td><b>GSTIN</td></b><td>{{c.gstin}}</td>
+									<td><b>Created by</b></td><td>{{c.createdBy.fullName}}</td></tr>
+									<tr><td><b>Created On</b></td><td>{{c.createdOn | date:'MM/dd/yyyy - h:mma'}}</td>
+										<td><b>DoorNo</b></td><td>{{c.customerAddress.doorNo}}</td></tr>
+										<tr><td><b>Street</b></td><td>{{c.customerAddress.streetName}}</td><td><b>Landmark</b></td><td>{{c.customerAddress.landmark}}</td></tr>
+										<tr><td><b>City</b></td><td>{{c.customerAddress.city}}</td><td> <b>State</b></td><td>{{c.customerAddress.state}}</td></tr>
+
+									</tbody>
+								</table>
+								
+								<button class="btn btn-md btn-default" ng-click="editCustomer(c);" data-toggle="modal" data-target="#customerModal">Edit Customer</button>
+					<!--<button ng-click="removeCustomer(c);" data-toggle="modal" data-target="#customerModal">delete</button>-->
+								
+							</div> </td>
+						</tr></tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div></div></div>
+	</div> 
+
+</div>
+<!-- Modal-->
+<div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Customer
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></h3>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="CustomerName" class="col-form-label">Name</label>
+            <input type="text" class="form-control" id="productName" ng-value="modalData.customerName" ng-model="modalData.customerName" placeholder="Customer name">
+          </div>
+          <div class="form-group">
+            <label for="CustomerAddresss" class="col-form-label">Address</label>
+                     
+        
+          <div class="row">
+          <div class="col-lg-6">
+            <input type="text" class="form-control" id="doorNo" ng-model="modalData.customerAddress.doorNo" placeholder="Door no">
+          </div>
+          
+          <div class="col-lg-6">
+            <input type="text" class="form-control" id="street" ng-model="modalData.customerAddress.streetName" required placeholder="Street">
+          </div></div>
+
+          <div class="row">
+          <div class="col-lg-6">
+            <input type="text" class="form-control" id="landmark" ng-model="modalData.customerAddress.landmark" required placeholder="Landmark">
+          </div>
+          
+          <div class="col-lg-6">
+            <input type="text" class="form-control" id="city" ng-model="modalData.customerAddress.city" required placeholder="City">
+          </div></div>
+
+
+          <div class="row">
+          <div class="col-lg-6">
+            <input type="text" class="form-control" id="state" ng-model="modalData.customerAddress.state" placeholder="State">
+          </div>
+          
+          </div>
+            </div>
+            <div class="form-group">
+            <label for="Contact" class="col-form-label">Contact</label>
+                     
+        
+          <div class="row">
+          <div class="col-lg-6">
+            <input type="text" class="form-control" id="contactNum" ng-model="modalData.phoneNumber1" placeholder="Contact 1">
+          </div>
+          
+          <div class="col-lg-6">
+            <input type="text" class="form-control" id="contactNum" ng-model="modalData.phoneNumber2" placeholder="Contact 2">
+          </div></div>
+          <div class="row">
+
+          <div class="col-lg-6">
+          <label for="GSTIN" class="col-form-label">GSTIN</label>
+
+            <input type="text" class="form-control" id="gstin" ng-model="modalData.gstin" placeholder="GSTIN">
+          </div>
+
+          <div class="col-lg-6">
+          <label for="Incharge" class="col-form-label">Incharge</label>
+            <select class="form-control" ng-model="modalData.incharge.username">
+    <option ng-repeat="u in users" value="{{u.username}}">{{u.fullName}}</option>
+  	</select>
+          </div></div>
+        
+      </div>
+      <div class="modal-footer">
+      <span ng-show="modalData != undefined && modalData.errorMessage != undefined && modalData.errorMessage.length > 0" class="text-danger pull-left"><strong>Error  </strong>{{modalData.errorMessage}}</span>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+        <button type="submit" class="btn btn-primary" ng-click="addNewCustomer(modalData)" ><!-- ng-disabled="(modalData.customerName == undefined||modalData.customerName.length == 0) || (modalData.customerAddress ==undefined || modalData.customerAddress.streetName ==undefined||  modalData.customerAddress.streetName.length == 0 )|| (modalData.customerAddress ==undefined || modalData.customerAddress.streetName == undefined|| modalData.customerAddress.city.length ==0 )|| (modalData.incharge == undefined || modalData.incharge.username == undefined|| modalData.incharge.username.length==0) || (modalData.phoneNumber1== undefined|| modalData.phoneNumber1.length==0)" -->Save</button></form>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="noty-holder pull-right" ng-show="errorMessage.length > 0">
+    <div class="alert alert-danger" >
+      <button type="button" class="close" ng-click="errorMessage=''">×</button>
+      <strong>Failed!</strong> {{errorMessage}}
+  </div>
+</div>
+</div>
+
