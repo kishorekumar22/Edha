@@ -3,6 +3,8 @@ package com.edhaorganics.backend.service;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,9 +20,15 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepo;
 
-	public Order placeNewOrder(Order order) {
+
+	@Autowired
+	private MailService mailService;
+
+	@Transactional
+	public Long placeNewOrder(Order order) {
 		order.setStatus(OrderStatus.NEW);
-		return orderRepo.save(order);
+		Order orderPlaced = orderRepo.save(order);
+		return orderPlaced.getId();
 	}
 
 	public List<Order> getOrders() {
@@ -74,7 +82,8 @@ public class OrderService {
 	}
 
 	public List<Order> getClosedOrdersofUser(String username) {
-		return orderRepo.findTop100ByStatusAndUser_usernameOrderByCreatedOnDesc(OrderStatus.valueOf("CLOSED"),username);
+		return orderRepo
+				.findTop100ByStatusAndUser_usernameOrderByCreatedOnDesc(OrderStatus.valueOf("CLOSED"), username);
 	}
 
 }

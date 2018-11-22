@@ -3,7 +3,9 @@ package com.edhaorganics.backend.repo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.edhaorganics.backend.beans.Order;
@@ -37,5 +39,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	List<Order> findByUser_Username(String salesman);
 
 	List<Order> findTop100ByStatusAndUser_usernameOrderByCreatedOnDesc(OrderStatus status, String username);
+
+//	@Query(value = "select o from Order o join fetch o.customer left join fetch o.user where o.id=?1")
+//	Order findByOrderId(Long id);
+	
+	@EntityGraph(attributePaths = "products")
+	@Query("FROM Order order")
+	Order findByOrderId(Long id);
 
 }

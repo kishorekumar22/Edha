@@ -1,6 +1,7 @@
 'use strict';
 app.constant('CONSTANTS', (function() {
-  var MAIN_URL = 'https://edha.herokuapp.com/edha/api/';
+  //var MAIN_URL = 'https://edha.herokuapp.com/edha/api/';
+  var MAIN_URL = 'http://localhost:7779/edha/api/';
   var PRODUCTS = 'products/';
   var CUSTOMERS = 'customer/';
   var ORDERS = 'orders/';

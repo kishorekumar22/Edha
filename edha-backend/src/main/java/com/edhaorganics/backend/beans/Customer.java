@@ -40,7 +40,7 @@ public class Customer {
 	private String phoneNumber2;
 
 	@CreationTimestamp
-	@Column(updatable =false)
+	@Column(updatable = false)
 	private LocalDateTime createdOn;
 
 	@UpdateTimestamp
@@ -48,9 +48,19 @@ public class Customer {
 
 	@ManyToOne
 	private EdhaUser createdBy;
-	
+
 	@ManyToOne
 	private EdhaUser incharge;
+
+	private String emailId;
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
 	public Long getId() {
 		return id;
@@ -67,7 +77,6 @@ public class Customer {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-
 
 	public LocalDateTime getCreatedOn() {
 		return createdOn;

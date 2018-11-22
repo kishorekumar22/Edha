@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edhaorganics.backend.beans.Order;
+import com.edhaorganics.backend.service.MailService;
 import com.edhaorganics.backend.service.OrderService;
 
 @RestController
@@ -23,10 +24,16 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
+	@Autowired
+	private MailService mailService;
+
 	@PostMapping("/add")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SALESMAN')")
-	public Order placeOrder(@RequestBody @Valid Order order) {
-		return orderService.placeNewOrder(order);
+	public Long placeOrder(@RequestBody @Valid Order order) {
+		Long orderid = orderService.placeNewOrder(order);
+		mailService.sendOrderConfirmation(orderid);
+		return orderid;
+
 	}
 
 	@GetMapping("/list")
@@ -53,16 +60,16 @@ public class OrderController {
 			@RequestParam(required = false) String period, @RequestParam(required = false) String inchargeName) {
 		return orderService.getOrdersByFilter(customerName, period, inchargeName);
 	}
-	
+
 	@GetMapping("/update-order-status/{orderId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SALESMAN')")
-	public Order updateStatus(@PathVariable String orderId,@RequestParam(required=true) String newStatus) {
-		return orderService.updateOrderStatus(orderId,newStatus);
+	public Order updateStatus(@PathVariable String orderId, @RequestParam(required = true) String newStatus) {
+		return orderService.updateOrderStatus(orderId, newStatus);
 	}
-	
+
 	@GetMapping("/list-my-closed-orders/{username}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SALESMAN')")
-	public List<Order> listClosedOrderOfSaleman(@PathVariable String username){
+	public List<Order> listClosedOrderOfSaleman(@PathVariable String username) {
 		return orderService.getClosedOrdersofUser(username);
 	}
 }

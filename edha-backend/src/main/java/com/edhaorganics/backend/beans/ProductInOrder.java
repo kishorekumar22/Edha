@@ -1,6 +1,7 @@
 package com.edhaorganics.backend.beans;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -10,8 +11,8 @@ public class ProductInOrder {
 	@Id
 	@GeneratedValue
 	private Long pid;
-	
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Product product;
 	private int qty;
 
