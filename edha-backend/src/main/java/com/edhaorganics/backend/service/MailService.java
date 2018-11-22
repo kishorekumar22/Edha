@@ -38,7 +38,7 @@ public class MailService {
 	@Async
 	public void sendOrderConfirmation(Long orderId) {
 		List<String> recipients = new ArrayList<>();
-		Order orderPlaced = orderRepo.findByOrderId(orderId);
+		Order orderPlaced = orderRepo.getOne(orderId);
 		if (orderPlaced != null && !StringUtils.isEmpty(orderPlaced.getUser().getEmailId())) {
 			recipients.add(orderPlaced.getUser().getEmailId());
 		}

@@ -43,8 +43,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //	@Query(value = "select o from Order o join fetch o.customer left join fetch o.user where o.id=?1")
 //	Order findByOrderId(Long id);
 	
+	@Override
 	@EntityGraph(attributePaths = "products")
 	@Query("FROM Order order")
-	Order findByOrderId(Long id);
+	Order getOne(Long id);
 
 }
