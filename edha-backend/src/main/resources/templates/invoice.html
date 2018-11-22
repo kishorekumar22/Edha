@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<table width="80%">
+		<tr>
+			<td colspan="2"><hr /></td>
+		</tr>
+		<tr>
+			<td colspan="2"><h2 style="margin: 0; align: center">Order
+					Confirmation</h2></td>
+		</tr>
+		<tr>
+			<td colspan="2"><hr /></td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td><h3 style="margin: 0">
+								<span th:text=${order.customer.customerName}></span><br />
+							</h3> <span th:text=${order.customer.customerAddress.doorNo}></span>,<span
+							th:text=${order.customer.customerAddress.streetName}></span>,<br />
+							<span th:text=${order.customer.customerAddress.city}></span>,<span
+							th:text=${order.customer.customerAddress.state}></span>,<br /> <span
+							th:if="${order.customer.phoneNumber1 != null}"
+							th:text="${order.customer.phoneNumber1}"></span> <span
+							th:if="${order.customer.phoneNumber2 != null}"
+							th:text="${order.customer.phoneNumber2}"></span><span
+							th:if="${order.customer.emailId!= null}"
+							th:text="${order.customer.emailId}"></span><br /> <b>GSTIN#</b>
+							<span th:if="${order.customer.gstin != null}"
+							th:text="${order.customer.gstin}">N/A</span><br /></td>
+					</tr>
+				</table>
+			</td>
+			<td align="right">
+				<table>
+					<tr>
+						<td align="right">
+							<h3 style="margin: 0">
+								Order #<span th:text=${order.id}></span><br />
+							</h3><span
+							th:text="${#temporals.format(order.createdOn, 'dd-MMM-yyyy HH:mm')}"></span><br/>
+							<h3 style="margin: 0">Edha Organics,Coimbatore</h3><br/><strong>Ordered by:
+						</strong><span th:text="${order.user.fullName}"></span><br /> <span
+							th:text="${order.user.phoneNumber}"></span><br /> <span
+							th:text="${order.user.emailId}"></span>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><hr /></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<table width="80%">
+					<tr>
+						<td align="left">Please find below the Order details,Thanks
+							for placing the order.<br /> <br />
+
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<table width="80%" border="1" bordercolor="#888" cellspacing="0"
+					cellpadding="4">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Qty</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="productinOrder,itrStat : ${order.products}">
+							<td><span th:text="${itrStat.index +1}"></span></td>
+							<td class="text-right"><span
+								th:text="${productinOrder.product.productName}"></span></td>
+							<td class="text-right"><span
+								th:text="${productinOrder.product.price}"></span></td>
+							<td class="text-right"><span th:text="${productinOrder.qty}"></span></td>
+							<td class="text-right"><span
+								th:text="${productinOrder.product.price * productinOrder.qty}"></span></td>
+						</tr>
+						<tr>
+
+							<td class="no-line" colspan="4">Subtotal</td>
+							<td class="no-line text-right"><b
+								th:text="${#aggregates.sum(order.products.![product.price * qty])}" /></b></td>
+						</tr>
+						<tr>
+
+							<td class="no-line" colspan="4">Discount
+									offered</td>
+							<td class="no-line text-right"><span
+								th:text="${order.discount}"></span>%</td>
+						</tr>
+						<tr>
+							<td class="no-line" colspan="4"><strong>Total</strong></td>
+							<td class="no-line text-right"><b
+								th:text="${(#aggregates.sum(order.products.![product.price * qty]))*(1-(order.discount/100.0))}"></b></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><hr /></td>
+		</tr>
+	</table>
+	<span align="left">Please do not reply to this email.Please
+		contact Salesman or Edha Organics<br /> <br />
+	</span>
+</body>
+</html>
