@@ -1,13 +1,18 @@
 package com.edhaorganics.backend.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edhaorganics.backend.beans.EdhaUser;
 import com.edhaorganics.backend.beans.Expense;
+import com.edhaorganics.backend.beans.ExpenseProjection;
 import com.edhaorganics.backend.repo.ExpenseRepository;
 import com.edhaorganics.backend.repo.UserRepository;
 
@@ -33,8 +38,16 @@ public class ExpenseService {
 
 	}
 
-	public List<Expense> getMonthExpense(String username) {
-		return expenseRepo.findByUser_usernameOrderByDateAsc(username);
-	}
+	public Map<LocalDate, List<ExpenseProjection>> getMonthExpense(String username) {
+		List<ExpenseProjection> expense = expenseRepo.findByUser_usernameOrderByDateAsc(username);
+		Map<LocalDate, List<ExpenseProjection>> monthlyExpense = new HashMap<>();
+		expense.stream().forEach(e -> {
+			if (monthlyExpense.containsKey(e.getDate()))
+				monthlyExpense.get(e.getDate()).add(e);
+			else
+				monthlyExpense.put(e.getDate(), new ArrayList<ExpenseProjection>(Arrays.asList(e)));
+		});
+		return monthlyExpense;
 
+	}
 }

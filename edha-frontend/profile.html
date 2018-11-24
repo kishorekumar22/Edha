@@ -109,7 +109,7 @@
                    </thead>
       <tbody ng-repeat="o in userOrders">
 
-        <tr data-toggle="collapse" data-target="#demo{{o.id}}" class="accordion-toggle">
+        <tr data-toggle="collapse" data-target="#orders{{o.id}}" class="accordion-toggle">
           <td>{{$index + 1}}</td>
           <td>{{o.id}}</td>
           <td>{{o.customer.customerName}}</td>
@@ -121,7 +121,7 @@
         <tr>
 
           <tr>
-            <td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;text-align:center"><div class="accordian-body collapse" id="demo{{o.id}}"> 
+            <td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;text-align:center"><div class="accordian-body collapse" id="orders{{o.id}}"> 
               <table class="table table-bordered">
                 <thead>
                   <tr><th>#</th>
@@ -259,10 +259,29 @@
           <div class="tab-content" ng-show="tabSelected ==='expenses'">
           <div class="tab-pane active">
             <div class="table-responsive">
-            <div class="alert alert-info" ng-show="monthlyExpense.length == 0">
+            <div class="alert alert-info" ng-show="(monthlyExpense | json) == '{}'">
               No added by user: <strong>{{user.fullName}}</strong>,so far !!
             </div>
-              <table class="table table-hover" ng-show="monthlyExpense.length > 0">
+            <table class="table table-hover"  ng-hide="(monthlyExpense | json) == '{}'">
+                <thead>
+                <tr><th>#</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                </tr>
+                   </thead>
+            <tbody ng-repeat="(date,ex) in monthlyExpense">
+
+              <tr data-toggle="collapse" data-target="#expense{{date}}" class="accordion-toggle">
+                <td>{{$index + 1}}</td>
+                
+                <td>{{date | date:'dd/MM/yyyy'}}</td>
+                <td> {{calculateExpense(ex)}}
+                </td>
+              </tr>
+
+                <tr>
+ <td colspan="12" class="hiddenRow" style="padding-top:0;padding-bottom:0;text-align:center"><div class="accordian-body collapse" id="expense{{date}}"> 
+              <table class="table table-bordered" >
                 <thead>
                   <tr>
                     <th>#</th>
@@ -271,7 +290,7 @@
                     <th>Amount</th>
                   </tr>
                 </thead>
-                <tbody ng-repeat="e in monthlyExpense">
+                <tbody ng-repeat="e in ex">
                   <tr >
                     <td>{{$index + 1}}</td>
                     <td>{{e.date | date:'dd/MM/yyyy' }}</td>
@@ -279,11 +298,12 @@
                     <td>{{e.amount}}</td>
         
                     </tr>
+                    </tbody>
+                    </table></div> </td>
+          </tr>
+        </tbody>
+      </table>
                     
-
-                      </tbody>
-
-                    </table>
                   </div>
 
                </div>
@@ -292,8 +312,8 @@
         </div><!--/col-9-->
       </div><!--/row-->
 
-      <div ng-include="'user_input_form.html'"></div>
-      <div ng-include="'expense_input_form.html'"></div>
+      <div html-subtitute template-path="user_input_form.html"></div>
+      <div html-subtitute template-path="expense_input_form.html"></div>
 
 
          

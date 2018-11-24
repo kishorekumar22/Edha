@@ -6,11 +6,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.edhaorganics.backend.beans.Expense;
+import com.edhaorganics.backend.beans.ExpenseProjection;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
 	List<Expense> findByDate(LocalDate now);
 
-	List<Expense> findByUser_usernameOrderByDateAsc(String username);
+	List<ExpenseProjection> findByUser_usernameOrderByDateAsc(String username);
 
 }

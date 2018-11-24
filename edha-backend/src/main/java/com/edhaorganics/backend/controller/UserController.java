@@ -1,7 +1,9 @@
 package com.edhaorganics.backend.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edhaorganics.backend.beans.EdhaUser;
 import com.edhaorganics.backend.beans.Expense;
+import com.edhaorganics.backend.beans.ExpenseProjection;
 import com.edhaorganics.backend.service.ExpenseService;
 import com.edhaorganics.backend.service.UserService;
 
@@ -80,10 +83,10 @@ public class UserController {
 	public EdhaUser saveExpense(@RequestBody List<Expense> expenses, Principal user) throws Exception {
 		return expenseService.saveTodaysExpense(user.getName(), expenses);
 	}
-	
+
 	@GetMapping("/get-month-expense/{username}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SALESMAN')")
-	public List<Expense> getMonthExpense(@PathVariable String username) throws Exception {
+	public Map<LocalDate, List<ExpenseProjection>> getMonthExpense(@PathVariable String username) throws Exception {
 		return expenseService.getMonthExpense(username);
 	}
 }

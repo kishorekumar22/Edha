@@ -174,7 +174,15 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
                 $scope.errorMessage = "Error in getting expenses.Contact support!";
        
             });
-    }
+    };
+
+    $scope.calculateExpense = function(expense){
+      var total = 0;
+      angular.forEach(expense, function(e){
+        total += e.amount;
+      });
+      return total;
+    };
 
    $scope.getUserDetails();
   });
