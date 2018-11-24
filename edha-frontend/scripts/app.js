@@ -37,11 +37,13 @@ app.config(function($routeProvider,$httpProvider) {
         templateUrl : "sales.html"
     });
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+    $httpProvider.interceptors.push('LoadingInterceptor');
     
     //$httpProvider.defaults.headers.common["edha-token"] = 'XMLHttpRequest';
     //$httpProvider.defaults.withCredentials = true
     
 });
+
 
 app.run(['$location','$rootScope','$http','usersService', function(l,r,h,usersService){
     
@@ -58,7 +60,6 @@ app.run(['$location','$rootScope','$http','usersService', function(l,r,h,usersSe
             l.path('/');
         }
         //alert(localStorage.currentUser);
-
     };
 
     r.performLogout = function(){
@@ -80,6 +81,32 @@ app.run(['$location','$rootScope','$http','usersService', function(l,r,h,usersSe
     };
 
 }]);
+
+
+app.service('LoadingInterceptor', 
+    ['$q', '$rootScope',  
+    function($q, $rootScope) {
+        'use strict';
+ 
+        return {
+            request: function(config) {
+                $rootScope.isLoading = true;
+                return config;
+            },
+            requestError: function(rejection) {
+                $rootScope.isLoading = false;
+                return $q.reject(rejection);
+            },
+            response: function(response) {
+                $rootScope.isLoading = false;
+                return response;
+            },
+            responseError: function(rejection) {
+                $rootScope.isLoading = false;
+                return $q.reject(rejection);
+            }
+        };
+    }]);
 
 
 

@@ -25,7 +25,7 @@
         </ul>
         <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#userModal" ng-click="editUser()">Edit User</button> 
         
-         <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#expenseModal">Add expense</button>
+         <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#expenseModal" ng-show=user.username==username>Add expense</button>
         
         
       </div><!--/col-3-->

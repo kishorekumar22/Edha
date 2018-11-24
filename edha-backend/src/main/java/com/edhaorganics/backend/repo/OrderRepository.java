@@ -40,12 +40,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	List<Order> findTop100ByStatusAndUser_usernameOrderByCreatedOnDesc(OrderStatus status, String username);
 
-//	@Query(value = "select o from Order o join fetch o.customer left join fetch o.user where o.id=?1")
-//	Order findByOrderId(Long id);
-	
 	@Override
 	@EntityGraph(attributePaths = "products")
-	@Query("FROM Order order")
+	@Query("FROM Order order where order.id=?1")
 	Order getOne(Long id);
 
 }
