@@ -19,9 +19,25 @@ app.factory('validationService', function(){
 
 	},
 
+  validateProduct : function(product){
+    if(this.isEmptyOrNull(product.productName)){
+      return "Invalid ProductName!";
+    }
+    if(this.isEmptyOrNull(product.price)){
+      return "Invalid ProductPrice!";
+    }
+    if(this.isEmptyOrNull(product.inventoryQty)){
+      return "Invalid Product Qty!";
+    }
+    return undefined;
+  },
+
   validateUser : function(user){
         if(this.isEmptyOrNull(user.fullName)){
           return "Invalid Name!";
+        }
+        if(this.isInvalidEmailId(user.emailId)){
+          return "Invalid EmailId!";
         }
          if(this.isEmptyOrNull(user.username)){
           return "Invalid username!";
@@ -35,9 +51,7 @@ app.factory('validationService', function(){
         if(this.isInvalidPhoneNumber(user.phoneNumber)){
           return "Invalid Phonenumber!";
         }
-        if(this.isInvalidEmailId(user.emailId)){
-          return "Invalid EmailId!";
-        }
+        
         if(this.isEmptyOrNull(user.role)){
           return "Please enter Role!";
         }
@@ -60,7 +74,10 @@ app.factory('validationService', function(){
         if(this.isInvalidPhoneNumber(customer.phoneNumber1)){
           return "Invalid Contact Number 1!";
         }
-	if(this.isInvalidPhoneNumberNonMadatory(customer.phoneNumber2)){
+        if(this.isInvalidEmailId(customer.emailId)){
+          return "Invalid EmailId!";
+        }
+	     if(this.isInvalidPhoneNumberNonMadatory(customer.phoneNumber2)){
           return "Invalid Contact Number2!";
         }
         //if(this.isInvalidEmailId(customer.phoneNumber1)){

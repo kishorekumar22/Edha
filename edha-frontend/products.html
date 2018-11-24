@@ -36,11 +36,11 @@
         <form>
           <div class="form-group">
             <label for="ProductName" class="col-form-label">Name</label>
-            <input type="text" class="form-control" id="productName" ng-value="modalData.name" ng-model="modalData.name">
+            <input type="text" class="form-control" id="productName" ng-value="modalData.productName" ng-model="modalData.productName">
           </div>
           <div class="form-group">
             <label for="ProductDescription" class="col-form-label">Description</label>
-            <textarea class="form-control" id="productDescription" ng-model="modalData.description">{{modalData.description}}</textarea>
+            <textarea class="form-control" id="productDescription" ng-model="modalData.productDescription">{{modalData.productDescription}}</textarea>
           </div>
           <div class="row">
           <div class="col-lg-6">
@@ -61,7 +61,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal" 
         ng-show="modalData.isEdit && modalData.isEdit==true" ng-click="deleteProduct()">Remove</button>
-        <button type="button" class="btn btn-primary" ng-click="saveEditedProduct()" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-primary" ng-click="saveEditedProduct()" >Save</button>
       </div>
     </div>
   </div>

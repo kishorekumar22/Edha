@@ -108,14 +108,4 @@ app.service('LoadingInterceptor',
         };
     }]);
 
-app.directive('htmlSubtitute', function() {
-  return {
-      restrict: 'AE',
-      templateUrl: function(ele, attrs) {
-          return attrs.templatePath;
-      }
-  };
-});
-
-
 

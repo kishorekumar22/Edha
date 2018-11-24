@@ -1,9 +1,9 @@
 'use strict';
-app.controller('ProductsController', function($scope,productsService,$rootScope) {
+app.controller('ProductsController', function($scope,productsService,$rootScope,validationService) {
     $scope.errorMessage = "";
 	$scope.products = [];
     $scope.modalData = {};
-    $scope.editedProduct = {};
+    //$scope.editedProduct = {};
     $scope.getProductsList = function(){
         productsService.getProducts()
         .then(
@@ -19,22 +19,18 @@ app.controller('ProductsController', function($scope,productsService,$rootScope)
       };
 
     $scope.modifyProduct = function(p){
-        $scope.modalData.name = p.productName;
-        $scope.modalData.id = p.id;
-        $scope.modalData.description = p.productDescription;
-        $scope.modalData.inventoryQty = p.inventoryQty;
-        $scope.modalData.price = p.price;
-        $scope.editedProduct = p;
+       $scope.modalData = JSON.parse(JSON.stringify(p))
         $scope.modalData.isEdit = true;
        };
 
     //Also used for adding new products
     $scope.saveEditedProduct = function(){
-        $scope.editedProduct.productName = $scope.modalData.name; 
-        $scope.editedProduct.productDescription = $scope.modalData.description;
-        $scope.editedProduct.inventoryQty = $scope.modalData.inventoryQty;
-        $scope.editedProduct.price = $scope.modalData.price;
-        productsService.saveProduct($scope.editedProduct)
+    var validation = validationService.validateProduct($scope.modalData);
+        if(validation && validation.length > 0){
+          $scope.modalData.errorMessage = validation;
+        }else{
+        $('#productModal').modal("hide");
+        productsService.saveProduct($scope.modalData)
         .then(
            function(response) {
               $scope.getProductsList();
@@ -47,7 +43,7 @@ app.controller('ProductsController', function($scope,productsService,$rootScope)
               $scope.getProductsList();
               $rootScope.checkAuth(errResponse);
           }); 
-
+      }
     };
 
     $scope.deleteProduct = function() { 
