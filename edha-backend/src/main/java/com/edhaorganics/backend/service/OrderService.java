@@ -1,6 +1,7 @@
 package com.edhaorganics.backend.service;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class OrderService {
 		EdhaUser edhauser = new EdhaUser();
 		edhauser.setUsername(user.getName());
 		order.setUser(edhauser);
+		if(order.getPayments()!= null && !order.getPayments().isEmpty()){
+			order.getPayments().get(0).setDate(LocalDateTime.now());
+		}
 		Order orderPlaced = orderRepo.save(order);
 		return orderPlaced.getId();
 	}
