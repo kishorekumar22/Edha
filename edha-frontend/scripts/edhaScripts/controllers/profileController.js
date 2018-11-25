@@ -186,8 +186,7 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
     };
 
     $scope.addPayment = function (payment){
-     var date =  checkSize(payment.date.getMonth() + 1) +'/'  + checkSize(payment.date.getDate()) + '/' + payment.date.getFullYear();
-     payment.date = new Date(date);
+     payment.date = new Date(Date.UTC(payment.date.getFullYear(), payment.date.getMonth(), payment.date.getDate()));
       var validation = validationService.validatePayment(payment);
 
       if(validation && validation.length > 0){
@@ -210,8 +209,4 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
 
    $scope.getUserDetails();
 
-    var checkSize = function(d){
-      if(d < 10)return '0'+d;
-      return d;
-    }
   });
