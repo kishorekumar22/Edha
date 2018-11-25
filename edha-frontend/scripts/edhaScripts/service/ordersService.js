@@ -23,6 +23,9 @@ app.factory('ordersService', ['$http', '$q','CONSTANTS', function($http,$q,c){
     },
     listMyClosedOrders : function(username){
     	return $http.get(c.GET_MY_CLOSED_ORDERS + username)
+    },
+    addPaymentToOrder : function(payment,orderId){
+        return $http.post(c.POST_ADD_PAYMENT + orderId, payment)
     }
 };
 

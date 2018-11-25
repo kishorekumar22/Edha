@@ -1,5 +1,5 @@
 'use strict';
-app.controller('OrdersController', function($scope,ordersService,productsService,customerService,$rootScope) {
+app.controller('OrdersController', function($scope,ordersService,productsService,customerService,$rootScope,validationService) {
     $scope.errorMessage = "";
     $scope.orders = [];
     $scope.products=[];
@@ -9,6 +9,7 @@ app.controller('OrdersController', function($scope,ordersService,productsService
     $scope.productQtyInOrder = "";
     $scope.customerForOrder ="";
     $scope.productInOrder ={};
+    $scope.payment={};
     var username = JSON.parse(localStorage.currentUser).username;
     $scope.filter ={"customerName" : "" , "inchargeName" :""};
     $scope.getOrdersList = function(){
@@ -82,13 +83,8 @@ app.controller('OrdersController', function($scope,ordersService,productsService
         $scope.newOrder.products = [];
         $scope.newOrder.products.push({"qty" : $scope.productQtyInOrder,"product":{"id":prodInCart.id,"name":prodInCart.productName,"price":prodInCart.price}})
       }
-    $scope.newOrder.discount = $scope.discountOffered;
-    $scope.newOrder.customer = {"id" : $scope.customerForOrder};
     $scope.productQtyInOrder = "";
     $scope.productInOrder ="";
-    //hard coded to be handled in back end
-    $scope.newOrder.user={"username": username};
-    
     //alert(JSON.stringify($scope.newOrder));
 
     };
@@ -109,31 +105,34 @@ app.controller('OrdersController', function($scope,ordersService,productsService
     };  
 
     $scope.placeNewOrder = function(){
-      //Hard coded
-      $scope.newOrder.user = {};
-      $scope.newOrder.user.username =JSON.parse(localStorage.currentUser).username;
-
-      //validation
-
-
-        ordersService.placeNewOrder($scope.newOrder)
-        .then(
-           function(response) {
-              $scope.getOrdersList();
-              $rootScope.authenticated = true;
-          },
-          function(errResponse){
-            $rootScope.checkAuth(errResponse);
-              console.error('Error while placing Orders');
-              $scope.errorMessage = "Error in placing Orders.Contact support!";
-          }); 
+      $scope.newOrder.user={"username": username}
+      $scope.newOrder.discount = $scope.discountOffered;
+      $scope.newOrder.customer = {"id" : $scope.customerForOrder};
+      $scope.newOrder.payments =[];
+    if($scope.payment.mode!=undefined){
+        $scope.newOrder.payments.push({"amount":$scope.payment.amount,"mode":$scope.payment.mode,"date" : new Date()});
+    }
+      var validation = validationService.validateOrder($scope.newOrder);
+     if(validation && validation.length > 0){
+          $scope.modalData.errorMessage = validation;
+        }
+        else{
+          $scope.payment= {};
+        $('#newOrder').modal("hide");
+          ordersService.placeNewOrder($scope.newOrder)
+          .then(
+             function(response) {
+                $scope.getOrdersList();
+                $rootScope.authenticated = true;
+            },
+            function(errResponse){
+              $rootScope.checkAuth(errResponse);
+                console.error('Error while placing Orders');
+                $scope.errorMessage = "Error in placing Orders.Contact support!";
+            }); 
+        }
       };
 
-    $scope.resetProducts = function(){
-      $scope.productQtyInOrder = 0;
-      $scope.productInOrder ="";
-      $scope.newOrder.products=[];
-    }
 
     var checkAndAddProductInCart = function(prodInCart){
       var isPresent = false;

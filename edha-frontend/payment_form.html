@@ -1,0 +1,41 @@
+<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Payment
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></h3>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+
+
+            <div class="row">
+              <div class="form-group col-md-6">
+              <label>OrderId</label>
+                <input type="number" class="form-control right" ng-value="payment.orderId" disabled></div>
+
+              <div class="form-group col-md-6">
+                <label>Date</label>
+                 <input class="form-control input-sm" type="date" ng-model="payment.date" placeholder="Date" ></div></div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>Amount</label>
+                <input type="number" class="form-control right" ng-model="payment.amount" min="0"></div>
+                <div class="form-group col-md-6">
+                 <label>Payment mode</label> <select class="form-control" ng-model="payment.mode">
+                 <option value="CASH">Cash</option>
+                 <option value="CHEQUE" >Cheque</option>
+                 <option value="ONLINE_PAYMENT">Online Transfer</option>
+               </select></div></div>
+
+
+               <div class="modal-footer">
+                <span ng-show="payment != undefined && payment.errorMessage != undefined && payment.errorMessage.length > 0" class="text-danger pull-left"><strong>Error </strong>{{payment.errorMessage}}</span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                <button type="button" class="btn btn-primary" ng-click="addPayment(payment)" >Save</button>
+              </div>
+            </div>
+          </div>
+        </div></form></div></h3></div></div></div></div>

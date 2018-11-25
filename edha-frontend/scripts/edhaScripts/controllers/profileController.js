@@ -10,6 +10,7 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
    $scope.newExpense = {};
    $scope.newExpense.amount='';
    $scope.newExpense.description = '';
+   $scope.payment={};
    //$scope.showPasswordChange = JSON.parse(localStorage.currentUser).username == $routeParams.username;
    $scope.getUserDetails = function(){
       usersService.getUserDetails($routeParams.username)
@@ -182,6 +183,28 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
         total += e.amount;
       });
       return total;
+    };
+
+    $scope.addPayment = function (payment){
+      payment.date = new Date(payment.date).toISOString();
+      var validation = validationService.validatePayment(payment);
+
+      if(validation && validation.length > 0){
+          $scope.payment.errorMessage = validation;
+        }else{
+          $('#paymentModal').modal("hide");
+          ordersService.addPaymentToOrder(payment,payment.orderId)
+          .then(
+           function(response) {
+             $scope.getNewOrdersOfUser();
+            $rootScope.authenticated = true;
+          },
+          function(errResponse){
+            $rootScope.checkAuth(errResponse);
+              console.error('Error while fetching sales of User');
+              $scope.errorMessage = "Error in fetching sales of User.Contact support!";
+          });
+        }
     };
 
    $scope.getUserDetails();

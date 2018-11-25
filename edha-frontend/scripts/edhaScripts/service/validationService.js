@@ -61,6 +61,39 @@ app.factory('validationService', function(){
 	return undefined;
       },
 
+
+  validateOrder : function(order){
+    if(this.isEmptyOrNull(order.customer)){
+      return "Please select a customer for order";
+    }
+    if(this.isEmptyOrNull(order.customer)){
+      return "Please select a customer for order";
+    }
+    if(order.products == undefined || order.products.length == 0 ){
+      return "Please select atleast one product";
+    }
+    if(order.payments.length > 0 && this.isEmptyOrNull(order.payments[0].amount)){
+      return "Please payment amount value";
+    }
+    return undefined;
+  },
+
+  validatePayment : function(payment){
+    if(this.isEmptyOrNull(payment.orderId)){
+      return "Invalid OrderId! could not proceed";
+    }
+    if(this.isEmptyOrNull(payment.date)){
+      return "Please enter date of Payment";
+    }
+    if(this.isEmptyOrNull(payment.amount)){
+      return "Please enter Payment amount";
+    }
+    if(this.isEmptyOrNull(payment.mode)){
+      return "Please select Payment mode";
+    }
+    return undefined;
+  },
+
 	validateCustomer : function(customer){
         if(this.isEmptyOrNull(customer.customerName)){
           return "Invalid Customer Name!";
