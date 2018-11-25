@@ -110,7 +110,7 @@ app.controller('OrdersController', function($scope,ordersService,productsService
       $scope.newOrder.customer = {"id" : $scope.customerForOrder};
       $scope.newOrder.payments =[];
     if($scope.payment.mode!=undefined){
-        $scope.newOrder.payments.push({"amount":$scope.payment.amount,"mode":$scope.payment.mode,"date" : new Date()});
+        $scope.newOrder.payments.push({"amount":$scope.payment.amount,"mode":$scope.payment.mode});
     }
       var validation = validationService.validateOrder($scope.newOrder);
      if(validation && validation.length > 0){

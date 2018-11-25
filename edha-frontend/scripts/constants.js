@@ -34,6 +34,7 @@ app.constant('CONSTANTS', (function() {
 	LOGOUT_URL : MAIN_URL +  USERS +  'logout',
 	POST_UPDATE_PASWORD : MAIN_URL + USERS + 'change-password',
 	POST_SAVE_EXPENSE : MAIN_URL + USERS + 'save-expense',
-	GET_MONTHLY_EXPENSE : MAIN_URL + USERS + 'get-month-expense/'
+	GET_MONTHLY_EXPENSE : MAIN_URL + USERS + 'get-month-expense/',
+	POST_ADD_PAYMENT : MAIN_URL + ORDERS + 'add-payment-to-order/'
   }
 })());
