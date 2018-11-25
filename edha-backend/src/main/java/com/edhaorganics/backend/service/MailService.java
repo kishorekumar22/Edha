@@ -37,6 +37,10 @@ public class MailService {
 
 	@Async
 	public void sendOrderConfirmation(Long orderId) {
+		sendOrderInMail(orderId, "Order Confirmation");
+	}
+
+	private void sendOrderInMail(Long orderId, String mailMessage) {
 		List<String> recipients = new ArrayList<>();
 		Order orderPlaced = orderRepo.getOne(orderId);
 		if (orderPlaced != null && !StringUtils.isEmpty(orderPlaced.getUser().getEmailId())) {
@@ -50,15 +54,21 @@ public class MailService {
 		try {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			helper.setFrom(ORDER_EDHAORGANICS_COM);
-			helper.setTo(recipients.toArray(new String[recipients.size()]));
-			helper.setSubject("Order Confirmation");
+			helper.setBcc(recipients.toArray(new String[recipients.size()]));
+			helper.setSubject("Order Update - Order#" + orderId);
 			Context context = new Context();
 			context.setVariable("order", orderPlaced);
+			context.setVariable("message", mailMessage);
 			helper.setText(builder.build(context, "invoice.html"), true);
 			mailSender.send(message);
 		} catch (MessagingException | MailException e) {
 			System.out.println("Exception in mailing:" + e.getMessage());
 		}
+	}
+
+	@Async
+	public void sendPaymentUpdate(Long orderId) {
+		sendOrderInMail(orderId, "Payment Update");
 
 	}
 }

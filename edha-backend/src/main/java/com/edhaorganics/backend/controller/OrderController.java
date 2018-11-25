@@ -1,5 +1,6 @@
 package com.edhaorganics.backend.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edhaorganics.backend.beans.Order;
+import com.edhaorganics.backend.beans.Payment;
 import com.edhaorganics.backend.service.MailService;
 import com.edhaorganics.backend.service.OrderService;
 
@@ -29,8 +31,8 @@ public class OrderController {
 
 	@PostMapping("/add")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SALESMAN')")
-	public Long placeOrder(@RequestBody @Valid Order order) {
-		Long orderid = orderService.placeNewOrder(order);
+	public Long placeOrder(@RequestBody @Valid Order order, Principal user) {
+		Long orderid = orderService.placeNewOrder(order, user);
 		mailService.sendOrderConfirmation(orderid);
 		return orderid;
 
@@ -71,5 +73,13 @@ public class OrderController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SALESMAN')")
 	public List<Order> listClosedOrderOfSaleman(@PathVariable String username) {
 		return orderService.getClosedOrdersofUser(username);
+	}
+
+	@PostMapping("/add-payment-to-order/{orderId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SALESMAN')")
+	public Order addPaymentToOrder(@PathVariable String orderId, @RequestBody Payment payment) {
+		Order order = orderService.addPaymentToOrder(orderId, payment);
+		mailService.sendPaymentUpdate(order.getId());
+		return order;
 	}
 }

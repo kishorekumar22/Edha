@@ -7,12 +7,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -22,11 +23,11 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "EDHA_ORDER")
 @DynamicUpdate
-@NamedEntityGraph(name = "order.user", attributeNodes = { @NamedAttributeNode("user") })
 public class Order {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderId_generator")
+	@SequenceGenerator(name = "orderId_generator", sequenceName = "order_seq", allocationSize = 50)
 	Long id;
 
 	@ManyToOne
@@ -46,6 +47,17 @@ public class Order {
 
 	private OrderStatus status;
 	int discount;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Payment> payments;
+
+	public List<Payment> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
+	}
 
 	public OrderStatus getStatus() {
 		return status;

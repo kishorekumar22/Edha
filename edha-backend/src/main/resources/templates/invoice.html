@@ -6,8 +6,7 @@
 			<td colspan="2"><hr /></td>
 		</tr>
 		<tr>
-			<td colspan="2"><h2 style="margin: 0; align: center">Order
-					Confirmation</h2></td>
+			<td colspan="2"><h2 style="margin: 0; align: center" th:text="${message}"></h2></td>
 		</tr>
 		<tr>
 			<td colspan="2"><hr /></td>
@@ -25,7 +24,7 @@
 							th:if="${order.customer.phoneNumber1 != null}"
 							th:text="${order.customer.phoneNumber1}"></span> <span
 							th:if="${order.customer.phoneNumber2 != null}"
-							th:text="${order.customer.phoneNumber2}"></span><span
+							th:text="${order.customer.phoneNumber2}"></span><br /> <span
 							th:if="${order.customer.emailId!= null}"
 							th:text="${order.customer.emailId}"></span><br /> <b>GSTIN#</b>
 							<span th:if="${order.customer.gstin != null}"
@@ -39,10 +38,10 @@
 						<td align="right">
 							<h3 style="margin: 0">
 								Order #<span th:text=${order.id}></span><br />
-							</h3><span
-							th:text="${#temporals.format(order.createdOn, 'dd-MMM-yyyy HH:mm')}"></span><br/>
-							<h3 style="margin: 0">Edha Organics,Coimbatore</h3><br/><strong>Ordered by:
-						</strong><span th:text="${order.user.fullName}"></span><br /> <span
+							</h3> <span
+							th:text="${#temporals.format(order.createdOn, 'dd-MMM-yyyy HH:mm')}"></span><br />
+							<h3 style="margin: 0">Edha Organics,Coimbatore</h3> <br /> <strong>Ordered
+								by: </strong><span th:text="${order.user.fullName}"></span><br /> <span
 							th:text="${order.user.phoneNumber}"></span><br /> <span
 							th:text="${order.user.emailId}"></span>
 						</td>
@@ -97,8 +96,7 @@
 						</tr>
 						<tr>
 
-							<td class="no-line" colspan="4">Discount
-									offered</td>
+							<td class="no-line" colspan="4">Discount offered</td>
 							<td class="no-line text-right"><span
 								th:text="${order.discount}"></span>%</td>
 						</tr>
@@ -107,11 +105,44 @@
 							<td class="no-line text-right"><b
 								th:text="${(#aggregates.sum(order.products.![product.price * qty]))*(1-(order.discount/100.0))}"></b></td>
 						</tr>
-
 					</tbody>
 				</table>
 			</td>
 		</tr>
+		<td colspan="2" align="center">
+				<table width="80%">
+					<tr>
+						<td align="left"><b>Payment Details : </b><span th:if="${#lists.isEmpty(order.payments)}"> N/A</span>
+						</td>
+					</tr>
+				</table>
+			</td>
+		
+		<tr>
+			<td>
+		<tr>
+			<td colspan="2" align="center" th:if="${not #lists.isEmpty(order.payments)}">
+				<table width="80%" border="1" bordercolor="#888" cellspacing="0"
+					cellpadding="4">
+					<tr>
+					<th><b>Payment# </b></th>
+					<th><b>Date</b></th>
+					<th><b>Mode</b></th>
+					<th><b>Amount</b></th>
+					</tr>
+					<tr th:each="payment,itr: ${order.payments}">
+						<td><span th:text="${itr.index +1 }"></span></td>
+						<td><span
+								th:text="${#temporals.format(payment.date, 'dd-MMM-yyyy' )}"></span></td>
+						<td><strong><span th:text="${payment.mode}"></span></strong></td>
+						<td class="text-right"><strong><span
+								th:text="${payment.amount}"></span> </strong></td>
+					</tr>
+				</table>
+		</tr>
+		</td>
+		</tr>
+
 		<tr>
 			<td colspan="2"><hr /></td>
 		</tr>

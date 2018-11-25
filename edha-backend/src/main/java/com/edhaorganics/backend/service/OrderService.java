@@ -1,5 +1,6 @@
 package com.edhaorganics.backend.service;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.edhaorganics.backend.beans.EdhaUser;
 import com.edhaorganics.backend.beans.Order;
 import com.edhaorganics.backend.beans.OrderStatus;
+import com.edhaorganics.backend.beans.Payment;
 import com.edhaorganics.backend.repo.OrderRepository;
 import com.edhaorganics.backend.util.DateUtil;
 
@@ -20,13 +23,15 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepo;
 
-
 	@Autowired
 	private MailService mailService;
 
 	@Transactional
-	public Long placeNewOrder(Order order) {
+	public Long placeNewOrder(Order order, Principal user) {
 		order.setStatus(OrderStatus.NEW);
+		EdhaUser edhauser = new EdhaUser();
+		edhauser.setUsername(user.getName());
+		order.setUser(edhauser);
 		Order orderPlaced = orderRepo.save(order);
 		return orderPlaced.getId();
 	}
@@ -86,4 +91,10 @@ public class OrderService {
 				.findTop100ByStatusAndUser_usernameOrderByCreatedOnDesc(OrderStatus.valueOf("CLOSED"), username);
 	}
 
+	public Order addPaymentToOrder(String orderId, Payment payment) {
+		Long id = Long.parseLong(orderId);
+		Order order = orderRepo.getOne(id);
+		order.getPayments().add(payment);
+		return orderRepo.save(order);
+	}
 }
