@@ -186,7 +186,7 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
     };
 
     $scope.addPayment = function (payment){
-      payment.date = new Date(payment.date).toISOString();
+    
       var validation = validationService.validatePayment(payment);
 
       if(validation && validation.length > 0){
