@@ -31,6 +31,7 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
       $scope.modalData = JSON.parse(JSON.stringify($scope.user));
       $scope.modalData.usernameDisabled = true;
       $scope.modalData.active = $scope.modalData.active.toString();
+      $scope.userrole = $scope.modalData.role;
    };
 
    $scope.addEditUserDetails = function(){

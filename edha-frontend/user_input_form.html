@@ -1,4 +1,4 @@
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -74,8 +74,9 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <label for="Role" class="col-form-label">Role :</label>
-                        <input type="radio" ng-model="modalData.role" value="ADMIN">admin
-                        <input type="radio" ng-model="modalData.role" value="SALESMAN">salesman
+                        <spam ng-show="userrole=='SALESMAN'">Salesman</span>
+                        <input ng-if="userrole!='SALESMAN'" type="radio" ng-model="modalData.role" value="ADMIN" ><span ng-if="userrole!='SALESMAN'"> admin</span>
+                        <input ng-if="userrole!='SALESMAN'" type="radio" ng-model="modalData.role" value="SALESMAN"><span ng-if="userrole!='SALESMAN'"> salesman</span>
                       </div>
                       <div class="col-lg-6">
                         <label for="Status" class="col-form-label">Status :</label>

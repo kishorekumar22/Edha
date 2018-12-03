@@ -107,7 +107,7 @@ app.factory('validationService', function(){
         if(this.isInvalidPhoneNumber(customer.phoneNumber1)){
           return "Invalid Contact Number 1!";
         }
-        if(this.isInvalidEmailId(customer.emailId)){
+        if(customer.emailId != undefined &&  customer.emailId.length > 0 && this.isInvalidEmailId(customer.emailId)){
           return "Invalid EmailId!";
         }
 	     if(this.isInvalidPhoneNumberNonMadatory(customer.phoneNumber2)){

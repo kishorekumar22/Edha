@@ -1,9 +1,21 @@
+ <div class="panel panel-info">
+    <div class="panel-heading clearfix">
+      <h3 class="panel-title pull-left" style="padding-top: 0.5%;"><b>Products</b></h3>
+
+      <div class="pull-right" style="padding-left:1%">
+
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal" ng-click="modalData={};editedProduct={}"> Add Product</button>
+      <!--<div class="form-group  pull-right">
+      <input type="text" name="searchCustomer" ng-model="searchCustomer" class="form-control col-md-3"/></div>-->
+  </div>
+</div>
  <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th> 
                 <!--<th scope="col">Status</th>-->
+                <th scope="col">Id</th>  
                 <th scope="col">Product</th>
                 <th scope="col" class="text-right">Stock</th>
                 <th scope="col" class="text-right">Price</th>
@@ -13,6 +25,7 @@
         <tbody>
             <tr ng-repeat="p in products">
                 <td>{{$index + 1}}</td>
+                <td>{{p.id}}</td>
                 <!--<td>{{p.active ? 'Available' : 'Deleted'}}</td>-->
                 <td><a ng-click="modifyProduct(p);" data-toggle="modal" data-target="#productModal">{{p.productName}}</a></td>
                 <td class="text-right">{{p.inventoryQty}}</td>
@@ -21,7 +34,6 @@
             </tr>
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal" ng-click="modalData={};editedProduct={}"> Add Product</button>
 
     <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
   <div class="modal-dialog" role="document">
@@ -35,9 +47,16 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
+          <div class="row">
+          <div class="col-lg-8">
             <label for="ProductName" class="col-form-label">Name</label>
-            <input type="text" class="form-control" id="productName" ng-value="modalData.productName" ng-model="modalData.productName">
+            <input type="text" class="form-control" id="productName" ng-value="modalData.productName" ng-model="modalData.productName" ng-disabled="modalData.isEdit">
           </div>
+         
+          <div class="col-lg-4" ng-show="modalData.isEdit">
+          <label for="ProductId" class="col-form-label">ID</label>
+            <input type="text" class="form-control" id="productName" ng-value="modalData.id" ng-model="modalData.id" ng-disabled="modalData.isEdit">
+          </div> </div>
           <div class="form-group">
             <label for="ProductDescription" class="col-form-label">Description</label>
             <textarea class="form-control" id="productDescription" ng-model="modalData.productDescription">{{modalData.productDescription}}</textarea>
