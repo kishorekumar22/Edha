@@ -14,10 +14,17 @@ app.factory('validationService', function(){
     	    isInvalidEmailId : function(input){
 		return input == undefined || input.length == 0 || (!(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i).test(input));
    },	
-	isInvalidPhoneNumberNonMadatory : function(input){
+	       isInvalidPhoneNumberNonMadatory : function(input){
 		return input != undefined && input.length > 0 && (!(/^\d{10}$/).test(input));
-
 	},
+
+          validatePAN : function(input){
+    return !(/^[a-zA-Z]{3}[PCHFATBLJG]{1}[a-zA-Z]{1}[0-9]{4}[a-zA-Z]{1}$/.test(input));
+  },
+
+          validateGSTIN : function(input){
+      return !(/^[0-9]{2}[a-zA-Z]{3}[PCHFATBLJG]{1}[a-zA-Z]{1}[0-9]{4}[a-zA-Z]{1}[0-9]{1}[Z]{1}[A-Z0-9]{1}$/.test(input));
+  },
 
   validateProduct : function(product){
     if(this.isEmptyOrNull(product.productName)){
@@ -36,8 +43,11 @@ app.factory('validationService', function(){
         if(this.isEmptyOrNull(user.fullName)){
           return "Invalid Name!";
         }
-        if(this.isInvalidEmailId(user.emailId)){
-          return "Invalid EmailId!";
+        if(this.isEmptyOrNull(user.fathersName)){
+          return "Invalid Father/Husband Name!";
+        }
+        if(user.pan != undefined && user.pan.length > 0 &&this.validatePAN(user.pan)){
+          return "Invalid PAN!"
         }
          if(this.isEmptyOrNull(user.username)){
           return "Invalid username!";
@@ -50,6 +60,9 @@ app.factory('validationService', function(){
         } 
         if(this.isInvalidPhoneNumber(user.phoneNumber)){
           return "Invalid Phonenumber!";
+        }
+        if(this.isInvalidEmailId(user.emailId)){
+          return "Invalid EmailId!";
         }
         
         if(this.isEmptyOrNull(user.role)){
@@ -112,6 +125,9 @@ app.factory('validationService', function(){
         }
 	     if(this.isInvalidPhoneNumberNonMadatory(customer.phoneNumber2)){
           return "Invalid Contact Number2!";
+        }
+        if(customer.gstin != undefined && customer.gstin.length > 0 && this.validateGSTIN(customer.gstin)){
+          return "Invalid GSTIN!";
         }
         //if(this.isInvalidEmailId(customer.phoneNumber1)){
           //return "Invalid Contact Number2!";

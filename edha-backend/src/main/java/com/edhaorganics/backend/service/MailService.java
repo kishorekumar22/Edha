@@ -2,6 +2,7 @@ package com.edhaorganics.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
 
+import com.edhaorganics.backend.beans.EdhaUser;
 import com.edhaorganics.backend.beans.Order;
 import com.edhaorganics.backend.repo.OrderRepository;
+import com.edhaorganics.backend.repo.UserRepository;
 import com.edhaorganics.backend.util.MailContentBuilder;
 
 @Service
@@ -34,6 +37,9 @@ public class MailService {
 
 	@Autowired
 	private MailContentBuilder builder;
+
+	@Autowired
+	private UserRepository userRepo;
 
 	@Async
 	public void sendOrderConfirmation(Long orderId) {
@@ -55,7 +61,7 @@ public class MailService {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			helper.setFrom(ORDER_EDHAORGANICS_COM);
 			helper.setBcc(recipients.toArray(new String[recipients.size()]));
-			helper.setSubject("Order Update - Order#" + orderId);
+			helper.setSubject("Edha Organics - Welcome User");
 			Context context = new Context();
 			context.setVariable("order", orderPlaced);
 			context.setVariable("message", mailMessage);
@@ -70,5 +76,33 @@ public class MailService {
 	public void sendPaymentUpdate(Long orderId) {
 		sendOrderInMail(orderId, "Payment Update");
 
+	}
+
+	@Async
+	public void sendWelcomeMail(String username) {
+		List<String> recipients = new ArrayList<>();
+		Optional<EdhaUser> newUserCreated = userRepo.findById(username);
+		EdhaUser newUser = newUserCreated.isPresent() ? newUserCreated.get() : null;
+		if (newUser != null && !StringUtils.isEmpty(newUser.getEmailId())) {
+			recipients.add(newUser.getEmailId());
+		}
+		if (newUser != null && newUser.getCreatedBy() != null
+				&& !StringUtils.isEmpty(newUser.getCreatedBy().getEmailId())) {
+			recipients.add(newUser.getCreatedBy().getEmailId());
+		}
+		recipients.add(ORDER_COPY_EMAIL);
+		MimeMessage message = mailSender.createMimeMessage();
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			helper.setFrom(ORDER_EDHAORGANICS_COM);
+			helper.setBcc(recipients.toArray(new String[recipients.size()]));
+			helper.setSubject("Welcome to Edha Organics - " + newUser.getFullName() + " !!");
+			Context context = new Context();
+			context.setVariable("user", newUser);
+			helper.setText(builder.build(context, "welcome.html"), true);
+			mailSender.send(message);
+		} catch (MessagingException | MailException e) {
+			System.out.println("Exception in mailing:" + e.getMessage());
+		}
 	}
 }

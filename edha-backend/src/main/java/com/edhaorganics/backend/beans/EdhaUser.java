@@ -43,6 +43,10 @@ public class EdhaUser {
 	private String emailId;
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
+	
+	private String fathersName;
+	
+	private String pan;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -141,6 +145,22 @@ public class EdhaUser {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public String getFathersName() {
+		return fathersName;
+	}
+
+	public void setFathersName(String fathersName) {
+		this.fathersName = fathersName;
+	}
+
+	public String getPan() {
+		return pan;
+	}
+
+	public void setPan(String pan) {
+		this.pan = pan;
 	}
 
 }

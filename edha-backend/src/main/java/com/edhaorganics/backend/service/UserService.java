@@ -17,14 +17,19 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepo;
 
-	public EdhaUser register(@Valid EdhaUser user,String principalUser) {
-		if(principalUser != null && checkUserName(principalUser)){
+	@Autowired
+	private MailService mailService;
+
+	public EdhaUser register(@Valid EdhaUser user, String principalUser) {
+		if (principalUser != null && checkUserName(principalUser)) {
 			EdhaUser creationUser = new EdhaUser();
 			creationUser.setUsername(principalUser);
 			user.setCreatedBy(creationUser);
 		}
 		user.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(user.getEmailId()));
-		return userRepo.save(user);
+		EdhaUser newUserCreated = userRepo.save(user);
+		mailService.sendWelcomeMail(newUserCreated.getUsername());
+		return newUserCreated;
 	}
 
 	public boolean checkUserName(String userName) {
@@ -45,7 +50,7 @@ public class UserService {
 
 	public EdhaUser saveEditedUser(@Valid EdhaUser user) {
 		EdhaUser userFromDb = getUser(user.getUsername());
-		if(userFromDb != null){
+		if (userFromDb != null) {
 			user.setPassword(userFromDb.getPassword());
 		}
 		return userRepo.save(user);

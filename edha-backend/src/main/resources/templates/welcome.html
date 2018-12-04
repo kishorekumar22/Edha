@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+	Hi
+	<span th:text="${user.fullName}"></span>!!
+	<br />
+	We are pleased to introduce you into Edha Organics. Please find
+		your login details.<br/>
+
+	<br /> Your username is
+	<b><span th:text="${user.username}"></span></b> and your password is your
+	email Id and account status is <span th:text="${user.active}"></span><br/> Please change the password after first login.<br/>
+	<br />
+	<span align="left">Please do not reply to this email.Please
+		contact Administrator or Edha Organics<br /> <br />
+	</span>
+	<br /> Thanks,<br/> Edha Organics.
+</body>
+</html>
