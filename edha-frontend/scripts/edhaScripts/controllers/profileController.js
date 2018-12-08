@@ -1,5 +1,5 @@
 'use strict';
-app.controller('ProfileController', function($scope,usersService,$routeParams,validationService,ordersService,customerService,$rootScope) {
+app.controller('ProfileController', function($scope,usersService,$routeParams,validationService,ordersService,customerService,$rootScope,settingsService) {
    $scope.user ={};
    $scope.customersOfUser =[];
    $scope.userOrders = [];
@@ -11,6 +11,7 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
    $scope.newExpense.amount='';
    $scope.newExpense.description = '';
    $scope.payment={};
+   $scope.expenseTypes = [];
    //$scope.showPasswordChange = JSON.parse(localStorage.currentUser).username == $routeParams.username;
    $scope.getUserDetails = function(){
       usersService.getUserDetails($routeParams.username)
@@ -127,8 +128,11 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
         return total;
     };
 
-    $scope.addExpense = function(){
+    $scope.addExpense = function(desc){
       var exists = false;
+      if(desc!= undefined && desc !=''){
+        $scope.newExpense.description += ' - ' + desc;
+      }
       angular.forEach($scope.expenses, function(e){
         if(e.description == $scope.newExpense.description){
           e.amount += $scope.newExpense.amount;
@@ -208,6 +212,19 @@ app.controller('ProfileController', function($scope,usersService,$routeParams,va
         }
     };
 
+    $scope.getExpenseTypes = function(){
+      settingsService.fetchExpenseType().then(
+           function(response) {
+              $scope.expenseTypes = response.data;
+              //angular.forEach($scope.expenseTypes,function(ex){ex.isEdit=false;});
+              $rootScope.authenticated = true;
+          },
+          function(errResponse){
+            $rootScope.checkAuth(errResponse);
+              console.error('Error while getting Expense types');
+              $scope.errorMessage = "Error in getting Expense types.Contact support!";
+          }); 
+    };
    $scope.getUserDetails();
 
   });

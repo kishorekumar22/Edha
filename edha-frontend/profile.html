@@ -13,8 +13,10 @@
         <ul class="list-group">
           <li class="list-group-item text-muted">{{user.role | lowercase }}</li>
           <li class="list-group-item text-right"><span class="pull-left"><strong>Username</strong></span> {{user.username}}</li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Email</strong></span> {{user.emailId}}</li>
-          <li class="list-group-item text-right"><span class="pull-left"><strong>Contact</strong></span> {{user.phoneNumber}}</li>
+          <li class="list-group-item text-right" ng-if="user.emailId != undefined"><span class="pull-left"><strong>Email</strong></span> {{user.emailId}}</li>
+          <li class="list-group-item text-right" ng-if="user.fathersName != undefined"><span class="pull-left"><strong>Father's Name</strong></span> {{user.fathersName}}</li>
+          <li class="list-group-item text-right" ng-if="user.pan != undefined"><span class="pull-left"><strong>PAN</strong></span> {{user.pan}}</li>
+          <li class="list-group-item text-right" ng-if="user.phoneNumber != undefined"><span class="pull-left"><strong>Contact</strong></span> {{user.phoneNumber}}</li>
           <li class="list-group-item text-right"><span class="pull-left"><strong>Status </strong></span> {{user.active ? 'Active' :'Inactive'}}</li>
 
         </ul> 
@@ -25,7 +27,7 @@
         </ul>
         <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#userModal" ng-click="editUser()">Edit User</button> 
         
-         <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#expenseModal" ng-show=user.username==username>Add expense</button>
+         <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#expenseModal" ng-show=user.username==username ng-click="getExpenseTypes()">Add expense</button>
         
         
       </div><!--/col-3-->

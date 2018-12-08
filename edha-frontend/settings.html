@@ -1,0 +1,118 @@
+<div class="container">
+   <fieldset>
+      <legend>Expense Types</legend>
+      <button class="btn btn-success pull-right" data-toggle="modal" data-target="#expenseTypeModal" ng-click="newExpenseType={}"> Add new ExpenseType</button>
+      <hr/>
+      <!-- Text input-->
+      <div class="table-responsive">
+         <table id="expenseTypeTable" class="table table-bordered">
+            <thead>
+               <th >#</th>
+               <th >Expense Type</th>
+               <th>Limit (max)</th>
+               <th>Description required</th>
+               <th>Actions</th>
+            </thead>
+            <tbody>
+               <tr ng-repeat="exType in expenseTypes">
+                  <td>{{$index+1}}</td>
+                  <td><span >{{exType.name}}</span> </td>
+                  <td><span>{{exType.maxValue}}</span> </td>
+                  <td>
+                     <span>{{exType.descRequired ? 'Yes' : 'No'}}</span>
+                  </td>
+                  <td >
+                     <div class="buttons">
+                        <button class="btn btn-primary btn-sm" ng-click="editExpenseType(exType)">Edit</button>
+                        <button class="btn btn-danger btn-sm" ng-click="deleteExpenseType(exType)">Delete</button>
+                     </div>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <hr/>
+      <div class="modal fade" id="expenseTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Expense Type
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                     </button>
+                  </h3>
+               </div>
+               <div class="modal-body">
+                  <form>
+                     <label class="control-label">Expense Name</label>  
+                     <input id="expenseTypeName" type="text" placeholder="Expense Name" class="form-control input-md"  ng-model="newExpenseType.name"> 
+                     <label class="control-label">Expense Limit</label> 
+                     <input id="expenseTypeLimit" type="number" placeholder="Limit in Rupees" class="form-control input-md"  ng-model="newExpenseType.maxValue"> 
+                     <br/><label class="control-label">Is Description required:</label>
+                     
+                     <input type="radio" ng-model="newExpenseType.descRequired" value='true'>Yes
+                      <input type="radio" ng-model="newExpenseType.descRequired" value='false'>No
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button class="btn btn-default" type="submit" ng-disabled="newExpenseType.name == undefined || newExpenseType.name == '' || newExpenseType.maxValue == undefined || newExpenseType.maxValue== ''" ng-click="saveExpenseType(newExpenseType)">Save</button>
+                  <button class="btn btn-sm" data-dismiss="modal">Cancel</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <legend>Discount Types</legend>
+      <button class="btn btn-success pull-right" data-toggle="modal" data-target="#discountTypeModal" ng-click="newDiscountType={}"> Add new Dicount Type</button>
+      <hr/>
+      <hr/>
+      <div class="table-responsive">
+         <table id="discountRates" class="table table-bordered">
+            <thead>
+               <th>#</th>
+               <th>Discount Type</th>
+               <th>%</th>
+               <th>Actions</th>
+            </thead>
+            <tbody>
+               <tr ng-repeat="discountType in discountTypes">
+                  <td>{{$index+1}}</td>
+                  <td><span >{{discountType.name}}</span> </td>
+                  <td><span>{{discountType.value}}</span> </td>
+                  <td >
+                     <div class="buttons">
+                        <button class="btn btn-primary btn-sm" ng-click="editDiscountType(discountType);">Edit</button>
+                        <button class="btn btn-danger btn-sm" ng-click="deleteDiscountType(discountType);">Delete</button>
+                     </div>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <hr/>
+      <div class="modal fade" id="discountTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 class="modal-title">Discount Type
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                     </button>
+                  </h3>
+               </div>
+               <div class="modal-body">
+                  <form>
+                     <label class="control-label">Discount Type</label>  
+                     <input id="discountTypeName" type="text" placeholder="Discount Name" class="form-control input-md"  ng-model="newDiscountType.name"> 
+                     <label class="control-label">Discount %</label> 
+                     <input id="discountTypeLimit" type="number" placeholder="%" class="form-control input-md"  ng-model="newDiscountType.value" max="100"> 
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button class="btn btn-default" type="submit" ng-disabled="newDiscountType.name == undefined || newDiscountType.name == '' || newDiscountType.value == undefined || newDiscountType.value== ''" ng-click="saveDiscountType(newDiscountType)">Save</button>
+                  <button class="btn btn-sm" data-dismiss="modal">Cancel</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </fieldset>
+</div>

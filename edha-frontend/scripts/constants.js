@@ -6,6 +6,8 @@ app.constant('CONSTANTS', (function() {
   var CUSTOMERS = 'customer/';
   var ORDERS = 'orders/';
   var USERS = 'user/';
+  var EXPENSE_TYPE = 'expense-type/';
+  var DISCOUNT_TYPE = 'discount-type/';
   return {
 	REST_URL: MAIN_URL,
 	LOGIN_URL : MAIN_URL + 'user/login',
@@ -35,6 +37,12 @@ app.constant('CONSTANTS', (function() {
 	POST_UPDATE_PASWORD : MAIN_URL + USERS + 'change-password',
 	POST_SAVE_EXPENSE : MAIN_URL + USERS + 'save-expense',
 	GET_MONTHLY_EXPENSE : MAIN_URL + USERS + 'get-month-expense/',
-	POST_ADD_PAYMENT : MAIN_URL + ORDERS + 'add-payment-to-order/'
+	POST_ADD_PAYMENT : MAIN_URL + ORDERS + 'add-payment-to-order/',
+	POST_SAVE_EXPENSE_TYPE_URL : MAIN_URL + EXPENSE_TYPE + 'save',
+	GET_EXPENSE_TYPES_URL : MAIN_URL + EXPENSE_TYPE + 'get',
+	POST_DELETE_EXPENSE_TYPE_URL : MAIN_URL + EXPENSE_TYPE + 'delete',
+	POST_SAVE_DISCOUNT_TYPE_URL : MAIN_URL + DISCOUNT_TYPE + 'save',
+	GET_DISCOUNT_TYPES_URL : MAIN_URL + DISCOUNT_TYPE + 'get',
+	POST_DELETE_DISCOUNT_TYPE_URL : MAIN_URL + DISCOUNT_TYPE + 'delete'
   }
 })());

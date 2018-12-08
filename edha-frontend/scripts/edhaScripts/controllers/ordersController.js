@@ -1,5 +1,5 @@
 'use strict';
-app.controller('OrdersController', function($scope,ordersService,productsService,customerService,$rootScope,validationService) {
+app.controller('OrdersController', function($scope,ordersService,productsService,customerService,$rootScope,validationService,settingsService) {
     $scope.errorMessage = "";
     $scope.orders = [];
     $scope.products=[];
@@ -221,8 +221,21 @@ app.controller('OrdersController', function($scope,ordersService,productsService
                 $scope.errorMessage = "Error in getting Orders.Contact support!";
             }); 
     }
-
-    
+  
+    $scope.getDiscountTypes = function(){
+      settingsService.fetchDiscountType().then(
+           function(response) {
+              $scope.discountTypes = response.data;
+              //angular.forEach($scope.expenseTypes,function(ex){ex.isEdit=false;});
+              $rootScope.authenticated = true;
+              $scope.newDiscountType={};
+          },
+          function(errResponse){
+            $rootScope.checkAuth(errResponse);
+              console.error('Error while getting Discount types');
+              $scope.errorMessage = "Error in getting Discount types.Contact support!";
+          }); 
+    }
 //initializes the order list
 $scope.getOrdersList();
   });

@@ -22,9 +22,11 @@
 <script src="scripts/edhaScripts/service/ordersService.js"></script>
 <script src="scripts/edhaScripts/controllers/ordersController.js"></script>
 <script src="scripts/edhaScripts/service/usersService.js"></script>
+<script src="scripts/edhaScripts/service/settingsService.js"></script>
 <script src="scripts/edhaScripts/controllers/usersController.js"></script>
 <script src="scripts/edhaScripts/controllers/loginController.js"></script>
 <script src="scripts/edhaScripts/controllers/profileController.js"></script>
+<script src="scripts/edhaScripts/controllers/settingsController.js"></script>
 <script src="scripts/edhaScripts/service/validationService.js"></script>
 <!-- Bootstrap core CSS -->
 <link href="./css/bootstrap.min.css" rel="stylesheet">
@@ -58,6 +60,7 @@
               <li><a ng-show="authenticated" href="#customers">Customers</a></li>
               <li><a ng-show="authenticated" href="#orders">Orders</a></li>
               <li><a ng-show="authenticated" href="#users">Users</a></li>
+              <li><a ng-show="authenticated" href="#settings">Settings</a></li>
         <li class="dropdown">
           <a ng-show="authenticated" class="dropdown-toggle" data-toggle="dropdown">{{username}}
           <span class="caret"></span></a>

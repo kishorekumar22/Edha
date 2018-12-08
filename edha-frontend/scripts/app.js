@@ -33,6 +33,11 @@ app.config(function($routeProvider,$httpProvider) {
         templateUrl : "profile.html",
         controller : "ProfileController"
     })
+
+   .when("/settings", {
+        templateUrl : "settings.html",
+        controller : "SettingsController"
+    })
     .when("/sale", {
         templateUrl : "sales.html"
     });
