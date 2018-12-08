@@ -48,6 +48,8 @@ app.controller('CustomerController', function($rootScope,$scope,customerService,
               console.error('Error while getting customer data');
               $scope.errorMessage = "Error in getting Customer data.Contact support!";
           });     
+      }else{
+        $scope.getCustomerList();
       }
         
       };
@@ -75,9 +77,7 @@ app.controller('CustomerController', function($rootScope,$scope,customerService,
 
       $scope.editCustomer = function(customer){
         $scope.modalData = JSON.parse(JSON.stringify(customer));
-      };
+      };  
 
-   
-    
 $scope.getCustomerList();
   });

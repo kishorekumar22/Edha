@@ -1,10 +1,28 @@
-<div class="container">
-   <fieldset>
+    <div class="col-sm-4 col-md-3 sidebar" ng-init="showExpenseSettings=true">
+    <div class="mini-submenu">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </div>
+    <div class="list-group"> 
+        <span class="list-group-item">
+            <strong>Settings</strong>
+        </span>
+        <a  class="list-group-item" ng-click="showExpenseSettings=true;showDiscountSettings=false">
+            Expense
+        </a>
+        <a  class="list-group-item" ng-click="showExpenseSettings=false;showDiscountSettings=true">
+            Discounts
+        </a> 
+    </div> </div> 
+
+
+   <fieldset ng-show="showExpenseSettings">
       <legend>Expense Types</legend>
       <button class="btn btn-success pull-right" data-toggle="modal" data-target="#expenseTypeModal" ng-click="newExpenseType={}"> Add new ExpenseType</button>
       <hr/>
       <!-- Text input-->
-      <div class="table-responsive">
+      <div class="table-responsive" ng-show="expenseTypes.length > 0">
          <table id="expenseTypeTable" class="table table-bordered">
             <thead>
                <th >#</th>
@@ -49,9 +67,8 @@
                      <label class="control-label">Expense Limit</label> 
                      <input id="expenseTypeLimit" type="number" placeholder="Limit in Rupees" class="form-control input-md"  ng-model="newExpenseType.maxValue"> 
                      <br/><label class="control-label">Is Description required:</label>
-                     
-                     <input type="radio" ng-model="newExpenseType.descRequired" value='true'>Yes
-                      <input type="radio" ng-model="newExpenseType.descRequired" value='false'>No
+                    <input type="radio" ng-model="newExpenseType.descRequired" value='true'>Yes
+                    <input type="radio" ng-model="newExpenseType.descRequired" value='false'>No
                   </form>
                </div>
                <div class="modal-footer">
@@ -61,16 +78,17 @@
             </div>
          </div>
       </div>
+      </fieldset>
+      <fieldset ng-show="showDiscountSettings">
       <legend>Discount Types</legend>
       <button class="btn btn-success pull-right" data-toggle="modal" data-target="#discountTypeModal" ng-click="newDiscountType={}"> Add new Dicount Type</button>
       <hr/>
-      <hr/>
-      <div class="table-responsive">
+      <div class="table-responsive" ng-show="discountTypes.length > 0">
          <table id="discountRates" class="table table-bordered">
             <thead>
                <th>#</th>
                <th>Discount Type</th>
-               <th>%</th>
+               <th>Percentage(%)</th>
                <th>Actions</th>
             </thead>
             <tbody>
@@ -115,4 +133,3 @@
          </div>
       </div>
    </fieldset>
-</div>

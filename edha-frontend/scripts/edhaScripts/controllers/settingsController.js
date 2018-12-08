@@ -6,7 +6,6 @@ app.controller('SettingsController', function($scope,settingsService,$rootScope)
 		$('#expenseTypeModal').modal("hide");
 		settingsService.saveExpenseType(exType).then(
            function(response) {
-              $scope.expenseTypes = response.data;
               $rootScope.authenticated = true;
               $scope.getExpenseTypes();
           },
@@ -35,7 +34,6 @@ app.controller('SettingsController', function($scope,settingsService,$rootScope)
 	$scope.deleteExpenseType = function(exType){
 		settingsService.deleteExpenseType(exType).then(
            function(response) {
-              $scope.expenseTypes = response.data;
               $rootScope.authenticated = true;
               $scope.getExpenseTypes();
           },
@@ -57,7 +55,6 @@ app.controller('SettingsController', function($scope,settingsService,$rootScope)
 		$('#discountTypeModal').modal("hide");
 		settingsService.saveDiscountType(exType).then(
            function(response) {
-              $scope.discountTypes = response.data;
               $rootScope.authenticated = true;
               $scope.getDiscountTypes();
           },
@@ -86,7 +83,6 @@ app.controller('SettingsController', function($scope,settingsService,$rootScope)
 	$scope.deleteDiscountType = function(dType){
 		settingsService.deleteDiscountType(dType).then(
            function(response) {
-              $scope.discountTypes = response.data;
               $rootScope.authenticated = true;
               $scope.getDiscountTypes();
           },

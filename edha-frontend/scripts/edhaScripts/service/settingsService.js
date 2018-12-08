@@ -19,7 +19,7 @@ app.factory('settingsService', ['$http', '$q','CONSTANTS', function($http,$q,c){
     	return $http.get(c.GET_DISCOUNT_TYPES_URL)
     },
     deleteDiscountType : function(discountTypeData){
-    	return $http.post(c.POST_DISCOUNT_EXPENSE_TYPE_URL , discountTypeData)
+    	return $http.post(c.POST_DELETE_DISCOUNT_TYPE_URL , discountTypeData)
     }
 }
 }]);
